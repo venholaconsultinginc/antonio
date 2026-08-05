@@ -39,13 +39,27 @@ DEVICE_SERIAL_NUMBER = 970000123  # fabricated; not a real unit
 DEVICE_PRODUCT_NAME = "Forerunner 970"
 DEVICE_SOFTWARE_VERSION = 21.34  # arbitrary, plausible
 
-# FIT Sport/Event enums -- these are the widely-documented, stable values.
+# FIT Sport/Event enums -- widely-documented, stable protocol-level values.
 SPORT_RUNNING = 1
 SUB_SPORT_GENERIC = 0
+FILE_TYPE_ACTIVITY = 4
+
+# The Event *table*'s own timer start/stop rows (message type "event", generic across all
+# activities) -- confirmed against a real Cordelia-produced database: event_id=0 (timer),
+# event_type 0 (start) and 4 (stop_all).
 EVENT_ID_TIMER = 0
 EVENT_TYPE_START = 0
 EVENT_TYPE_STOP_ALL = 4
-FILE_TYPE_ACTIVITY = 4
+
+# By contrast, Session/Lap/Activity each carry their own event_id/event_type pair recording
+# *which kind of FIT message* closed them out -- a different value per message type, not the
+# generic timer constants above. Also confirmed against real data (previously guessed wrong
+# here as EVENT_ID_TIMER/EVENT_TYPE_STOP_ALL for all three -- see cordelia ticket #72's
+# follow-up comment and docs/plan.md).
+SESSION_EVENT_ID = 8
+LAP_EVENT_ID = 9
+ACTIVITY_EVENT_ID = 26
+EVENT_TYPE_STOP = 1
 
 BASE_START_MINUTES = 9 * 60  # ~9:00 am
 BASE_PACE_SEC_PER_KM = 5 * 60 + 45  # 5:45 min/km easy run
@@ -214,8 +228,8 @@ def build_day_statements(file_number: int, run: dict) -> list[str]:
                 "Timestamp": end_ts,
                 "total_timer_time": float(duration_s),
                 "num_sessions": 1,
-                "event_id": EVENT_ID_TIMER,
-                "event_type": EVENT_TYPE_STOP_ALL,
+                "event_id": ACTIVITY_EVENT_ID,
+                "event_type": EVENT_TYPE_STOP,
                 "event_group": 0,
             },
         )
@@ -263,12 +277,12 @@ def build_day_statements(file_number: int, run: dict) -> list[str]:
         )
     )
 
+    # event_id/event_type deliberately excluded here -- Session and Lap each need their own
+    # message-specific value (see SESSION_EVENT_ID/LAP_EVENT_ID above), not a shared one.
     session_lap_common = {
         "file_number": file_number,
         "message_index": 0,
         "Timestamp": end_ts,
-        "event_id": EVENT_ID_TIMER,
-        "event_type": EVENT_TYPE_STOP_ALL,
         "start_position_lat": cdb.degrees_to_semicircles(first_lat),
         "start_position_long": cdb.degrees_to_semicircles(first_lon),
         "end_position_lat": cdb.degrees_to_semicircles(last_lat),
@@ -293,7 +307,15 @@ def build_day_statements(file_number: int, run: dict) -> list[str]:
             "Session",
             {
                 **session_lap_common,
-                "start_time": start_garmin,
+                "event_id": SESSION_EVENT_ID,
+                "event_type": EVENT_TYPE_STOP,
+                # Declared INTEGER in the schema, but cordelia actually binds/reads this as an
+                # ISO 8601 TEXT string, same encoding as Timestamp -- confirmed against a real
+                # Cordelia-produced database (session.cpp:1109 bind_string, :1764
+                # ISO8601DateTime::from_string). Previously written here as a Garmin-epoch
+                # integer, which was wrong -- see cordelia_db.py's GARMIN_EPOCH_OFFSET comment
+                # and docs/plan.md.
+                "start_time": start_ts,
                 "sport_id": SPORT_RUNNING,
                 "sub_sport_id": SUB_SPORT_GENERIC,
                 "min_heart_rate": round(min(heart_rates)),
@@ -319,8 +341,11 @@ def build_day_statements(file_number: int, run: dict) -> list[str]:
             "Lap",
             {
                 **session_lap_common,
+                "event_id": LAP_EVENT_ID,
+                "event_type": EVENT_TYPE_STOP,
                 # Declared TEXT in the schema, but cordelia's own Lap::insert() binds this as a
-                # plain int32 (Garmin-epoch, same as Session.start_time) -- SQLite's TEXT-affinity
+                # plain int32 (Garmin-epoch, same as -- despite the type mismatch running the
+                # other way -- what Session.start_time actually is too). SQLite's TEXT-affinity
                 # coercion then stores it as the integer's text digits, not an ISO 8601 string.
                 # Confirmed against cordelia/src/records/lap.cpp:903 and :1426. See docs/plan.md.
                 "start_time": start_garmin,

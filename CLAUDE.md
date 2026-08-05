@@ -35,21 +35,30 @@ diff the relevant `CREATE TABLE` statements in `../cordelia/src/records/*.cpp` a
 copied here first — `cordelia` is under active development and this repo does not track it
 automatically.
 
-Three encoding rules matter more than anything else in this codebase, because getting them wrong
+Four encoding rules matter more than anything else in this codebase, because getting them wrong
 produces a database that opens fine but is silently corrupt:
 
 1. **GPS is semicircle-encoded**, not plain degrees: `position_lat`/`position_long` are `INTEGER`
    int32, `semicircles = round(degrees * 2^31 / 180)`.
-2. **Two time encodings coexist and must stay consistent with each other**: `Timestamp`-style
-   columns are fixed 19-char TEXT `YYYY-MM-DDTHH:MM:SS` (UTC, no offset); `Session.start_time` and
-   similar `INTEGER` fields use the **Garmin epoch** (seconds since 1989-12-31 UTC, i.e. Unix time
-   minus `631065600`). Nothing in the schema enforces agreement between the two — that's on the
-   code that writes them.
+2. **Two time encodings coexist, and the declared column type is not a reliable guide to which one
+   a given column actually uses** — confirmed both ways against a real Cordelia-produced database,
+   not just by reading source. `Timestamp`-style columns are fixed 19-char TEXT
+   `YYYY-MM-DDTHH:MM:SS` (UTC, no offset). The other encoding is the **Garmin epoch** (seconds
+   since 1989-12-31 UTC, i.e. Unix time minus `631065600`). But:
+   - `Session.start_time` is declared `INTEGER`, yet is actually bound/read as ISO 8601 TEXT
+     (`session.cpp:1109,1764`) — same encoding as `Timestamp`, despite the declared type.
+   - `Lap.start_time` is declared `TEXT`, yet is actually bound/read as a Garmin-epoch `INTEGER`
+     (`cordelia/src/records/lap.cpp:903,1426`) — the reverse mismatch.
+
+   Nothing in the schema enforces agreement between related columns — that's on the code that
+   writes them. Never infer a column's actual encoding from its `CREATE TABLE` type; check the
+   real bind/extract call, or real data.
 3. `FileID` requires a distinct `(serial_number, time_created)` pair per activity.
-4. **`Lap.start_time` is declared `TEXT` but isn't an ISO 8601 string** — `cordelia` itself binds
-   it as a plain Garmin-epoch `int32` (`cordelia/src/records/lap.cpp:903,1426`), same as
-   `Session.start_time`. SQLite's `TEXT` affinity then stores it as text digits of that integer.
-   Write it as an unquoted Garmin-epoch integer literal, not a formatted date string.
+4. **`Session`, `Lap`, and `Activity` each have their own `event_id`/`event_type` pair, distinct
+   from the `Event` table's generic timer values.** The `Event` table's start/stop rows do use
+   `event_id=0` (timer), `event_type` 0/4 (start/stop_all). But `Session.event_id=8`,
+   `Lap.event_id=9`, `Activity.event_id=26`, all with `event_type=1` — confirmed against real
+   data. Don't reuse the `Event` table's timer constants for these three tables' own fields.
 
 All conversions belong in `cordelia_db.py`, not reimplemented per script. When deriving a
 Garmin-epoch integer from the same instant as an ISO 8601 TEXT column, use

@@ -14,8 +14,18 @@ SQL_DIR = Path(__file__).parent / "sql"
 CREATE_TABLES_SQL = SQL_DIR / "create_tables.sql"
 
 # Seconds between the Unix epoch (1970-01-01 UTC) and the Garmin/FIT epoch (1989-12-31 UTC).
-# Session.start_time and similar INTEGER time columns use the Garmin epoch; Timestamp-style
-# TEXT columns do not -- see to_iso8601() below. cordelia/src/core/iso8601_datetime.cpp:10.
+#
+# This schema's declared column type is NOT a reliable guide to which encoding a given time
+# column actually uses -- confirmed in both directions against a real Cordelia-produced
+# database, not just by reading source:
+#   - Session.start_time is declared INTEGER, but cordelia binds/reads it as ISO 8601 TEXT
+#     (session.cpp:1109 bind_string, :1764 ISO8601DateTime::from_string) -- same encoding as
+#     Timestamp, via to_iso8601() below, despite the column's declared type.
+#   - Lap.start_time is declared TEXT, but cordelia binds/reads it as a Garmin-epoch INTEGER
+#     (lap.cpp:903 bind_integer32, :1426 extract_integer32) -- the Garmin epoch conversions
+#     below apply here, despite the column's declared type.
+# Always check the actual bind/extract call (or real data) per column; don't infer from the
+# CREATE TABLE type. See docs/plan.md's encoding-rules section for the full writeup.
 GARMIN_EPOCH_OFFSET = 631065600
 
 
