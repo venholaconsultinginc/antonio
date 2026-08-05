@@ -1,3 +1,7 @@
+# Real personal activity data (never commit real Cordelia/Garmin exports to this repo --
+# only generate_sample_data.py's synthetic output belongs here; see CLAUDE.md).
+/routes/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

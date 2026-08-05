@@ -1,0 +1,4 @@
+# generate_sample_data.py itself needs nothing beyond the Python standard library.
+# These are for the report/plotting scripts (see docs/plan.md, Phase 3 -- not written yet).
+pandas>=2.0
+matplotlib>=3.8
