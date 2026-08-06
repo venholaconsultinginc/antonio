@@ -1,10 +1,6 @@
-# Real personal activity data (never commit real Cordelia/Garmin exports to this repo --
-# only generate_sample_data.py's synthetic output belongs here; see CLAUDE.md).
-/routes/
-
-# Generated sample-data output (regenerate locally via generate_sample_data*.py; per CLAUDE.md's
-# data-hygiene rule, no generated .sqlite/.db file is ever committed).
-/output/
+# Demo-data generation (routes/, generated .sqlite output, internal planning docs) all moved to
+# the private data_generators sibling repo on 2026-08-06 -- see CLAUDE.md. Nothing generator- or
+# planning-related is expected to exist in this working tree going forward.
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
