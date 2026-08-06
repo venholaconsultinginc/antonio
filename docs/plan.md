@@ -86,11 +86,21 @@ report script gets them for free instead of re-deriving them.
   first is the write-side (INSERT-building) half, since Phase 2 needed it immediately and Phase 3
   (which needs the read side) hasn't started. The two live in the same module by design — see the
   module docstring.
+- **Revised 2026-08-06**: the write side no longer builds SQL text. `insert_statement`/
+  `insert_many_statement`/`sql_literal` are replaced by `create_schema`/`insert_row`/`insert_many`,
+  which execute directly against a live `sqlite3.Connection`. The motivating fix: `insert_row`
+  returns the row's real assigned primary key (`cursor.lastrowid`) and refuses to insert if the
+  caller tries to set that primary key explicitly — closing off exactly the bug described in the
+  Phase 2 correction below, where a generator's own counter had to be trusted to match what SQLite
+  would later assign.
 
 ### Phase 2 — Synthetic data generator (done, 2026-08-05)
 
 - `generate_sample_data.py`, CLI-driven: output path, number of days (default 30), random seed
-  (default 970, for reproducible example output), start date (default: today minus (days-1)).
+  (default 970, for reproducible example output), start date (default: 2026-08-01 as of
+  2026-08-06 -- originally "today minus (days-1)", changed to a fixed date so re-running the
+  generator on a different day doesn't shift the output, matching the bike generator's fixed
+  `DEFAULT_RIDE_DATES`).
 - Route: `data/route_running.gpx`, a real public route named "5K Run for the Cure" in Ottawa (CIBC Run for
   the Cure, a Canadian Cancer Society charity run) — see `data/SOURCES.md` for provenance. ~5.03 km,
   48 waypoints with elevation, walked once per simulated run at 1 Hz for `Record` rows.
@@ -112,6 +122,15 @@ report script gets them for free instead of re-deriving them.
   `event_id`/`event_type` fields wrongly reused the `Event` table's generic timer constants
   instead of their real per-message values (8/9/26, `event_type=1`). See the encoding-rules
   section above; regenerated and re-pushed before Phase 2b started.
+- **Revised 2026-08-06**: output is now a real SQLite database (`output/sample_data.sqlite`),
+  written directly via `cordelia_db.py`'s `insert_row`/`insert_many` (see Phase 1's revision note)
+  — no more `output/sample_data.sql` text file, no separate `sqlite3 ... <` load step. This also
+  fixed a latent correctness risk: the generator previously self-assigned `file_number` as a plain
+  Python counter and wrote it as a literal into every dependent table's row, which was only correct
+  because it assumed SQLite's `AUTOINCREMENT` would assign those exact same values, in that exact
+  order, once the text was later loaded into a fresh table — an assumption that held in practice
+  but was never actually verified. Every dependent row now uses the real `file_number` `insert_row`
+  reads back from the `FileID` insert itself.
 
 ### Phase 2b — Cycling generator (done, 2026-08-05)
 
@@ -158,6 +177,50 @@ report script gets them for free instead of re-deriving them.
   showed both populated for a real ride; Phase 2 didn't include them.
 - Same output approach as Phase 2: batched `INSERT`s, only-populated-columns elsewhere, ~5.2 MB
   for 4 rides (~49,000 `Record` rows).
+- **Revised 2026-08-06**: same direct-to-`.sqlite` rework as Phase 2 above, output is now
+  `output/sample_data_bike.sqlite`.
+
+### Phase 2c — Kayaking generator (done, 2026-08-06)
+
+- `generate_sample_data_kayak.py`, built on Phase 2's `Route`/`load_route` (imported, not
+  duplicated). CLI-driven: eight fixed September 2026 paddle dates (2026-09-04/06/11/13/18/20/26/27,
+  set by the user rather than left relative-to-today, same reasoning as Phase 2's start-date
+  revision below), seed (default 41), route, output path. Direct-to-`.sqlite` from the start —
+  built after the Phase 1/2/2b revisions above, so it never had a `.sql`-text phase to move away
+  from.
+- Route: `data/route_kayak.gpx`, a real out-and-back paddle route off Mayne Island, BC — unlike
+  Phase 2/2b's routes (a public map page, an event organizer's own GPX), this one's geometry was
+  extracted from the user's own real personal recording, with explicit owner confirmation that the
+  public-beach launch/return point and the geometry-only extraction were both fine to commit. See
+  `data/SOURCES.md`'s `route_kayak.gpx` and "Real reference files" sections for exactly what was
+  and wasn't taken, and `CLAUDE.md`'s data hygiene section for the one-exception framing.
+- Pace/heart-rate/cadence baselines (1.056 m/s, 121 bpm, 22 strokes/min) come directly from the
+  real reference paddle's `Session` summary, same "ground-truthed, not invented" approach as
+  Phase 2b. Device is a real Garmin Venu (`garmin_product_id=3226`) — real model, fabricated
+  serial, same pattern as Phase 2b's Edge 1040/Venu 4.
+- **Sport code deliberately does not match the reference**: the real paddle was recorded as
+  `sport_id=15` (Rowing)/"Row" (plausible — many Garmin watches lack a distinct kayak profile) —
+  but since this repo's data is explicitly meant to demonstrate kayaking, `sport_id=41` (FIT's
+  actual Kayaking code) is used instead, a conscious exception to Phase 2b's "confirmed against
+  real data, not guessed" philosophy for this one field only.
+- **Wind, simulated as a pace/heart-rate effect, not a stored field**: checked every table in the
+  real reference database (not just the nine this repo normally touches) — there is no
+  wind/weather column anywhere in Cordelia's schema. Each simulated paddle draws one signed daily
+  wind strength; since the route is out-and-back, a single value naturally gives a tailwind on one
+  leg and a headwind on the other — speed shifts with it, heart rate shifts the opposite way
+  (harder effort against the wind for less boat speed). Purely a simulation input shaping the
+  numbers, the same status Temperature already had in Phase 2/2b — never written to any column of
+  its own.
+- Real device reports no elevation at all for this activity (`Altitude`/`enhanced_altitude` flat
+  `0` for all 5610 real `Record` rows) — carried through as explicit `0`, not invented, same
+  explicit-not-`NULL` precedent as Phase 2b's unequipped-sensor fields. Temperature *is* invented
+  (17°C, a plausible September-Mayne-Island-morning assumption), since the real device reported
+  flat `0` there too (not measured, not zero weather).
+- Two `DeviceInfo` rows only (the Venu and its own internal sub-device) — the real reference logged
+  six more rows for unidentified/no-vendor ANT accessories, not replicated, same "keep it simple"
+  simplification Phase 2b already makes for its own reference's messier details. One lap per
+  paddle (`lap_trigger=7`, session-end), not the real reference's auto-lap-every-500m — same
+  simplification as Phase 2/2b.
 
 ### Phase 3 — Report scripts
 

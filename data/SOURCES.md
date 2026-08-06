@@ -34,6 +34,31 @@ Victoria, BC, Canada — an organized charity/community cycling event (Tour de V
 - Used as the loop for `generate_sample_data_bike.py`'s four simulated September 2026 rides — see
   `docs/plan.md` for how it's used.
 
+## route_kayak.gpx
+
+Track geometry for a real out-and-back paddling route in the waters off **Mayne Island**, BC,
+Canada, launching and returning at a public beach.
+
+- Source: extracted from a real personal Garmin-recorded paddling activity
+  (`routes/16772849462_ACTIVITY.fit.sqlite`, a real Cordelia-imported database — see "Real
+  reference files" below), with the owner's explicit confirmation that the launch/return point is
+  a public beach and that extracting the route's geometry (not its personal data) is fine.
+  Extracted 2026-08-06.
+- Unlike `route_running.gpx`/`route_bike.gpx` (both sourced from an already-public map page or
+  event organizer's GPX), this route's shape comes from a real personal recording rather than a
+  pre-existing public source — worth stating plainly rather than blurring it with the other two.
+  Only the position trace was extracted: `<trkpt>` latitude/longitude/elevation, downsampled from
+  5549 real 1 Hz GPS fixes (61 invalid/no-fix rows dropped) to 144 points. Every timestamp, pace,
+  heart rate, stroke cadence, and device-identity field was deliberately left out — no personal
+  fitness data of any kind is in this file.
+- Real distance per the source `Session` summary: ~5.92 km round trip (this downsampled geometry
+  computes to ~5.71 km — downsampling straightens some of the path's curves, shortening it
+  slightly). The real device reported no elevation data for this activity (flat 0 throughout,
+  confirmed for both `Altitude` and `enhanced_altitude` across all 5610 `Record` rows) — plausible
+  for a coastal water paddle on a watch that doesn't report altitude for this activity type;
+  carried through here as `ele=0.00` for every point rather than invented.
+- Used as the route for `generate_sample_data_kayak.py`'s eight simulated September 2026 paddles.
+
 ## Real reference files (not committed)
 
 While building the cycling generator, a real ride (`routes/2026-08-05-13-53-16.fit` and its
@@ -42,5 +67,16 @@ Garmin device product IDs, real sport/event enum values, which fields an actual 
 paired Venu 4 populate. Nothing from that ride's actual data (its GPS trace, times, physiological
 readings, or device serial numbers) was copied into this repo or into the generator's output.
 Only structural facts about the *schema* were extracted, the same way `sql/create_tables.sql`
-itself was extracted from `cordelia`'s source. Those two files stay untracked and gitignored
-(`/routes/`) — see `CLAUDE.md`'s data hygiene section.
+itself was extracted from `cordelia`'s source.
+
+While building the kayak generator, the same treatment was applied to a real paddle
+(`routes/16772849462_ACTIVITY.fit.sqlite`) for schema/baseline grounding — real Garmin device
+product ID (Venu, `garmin_product_id=3226`), the real `Session` pace/heart-rate summary used as
+`BASE_SPEED_MPS`/`BASE_HEART_RATE`, and which fields the device actually populates (no elevation,
+no wind/weather field anywhere in the schema). **One deliberate exception to "nothing from the
+GPS trace is copied":** this file's position trace *was* extracted and committed, stripped to pure
+geometry, as `route_kayak.gpx` above — see that section for exactly what was and wasn't taken, and
+why (owner-confirmed public beach launch/return point).
+
+Both reference files stay untracked and gitignored (`/routes/`) — see `CLAUDE.md`'s data hygiene
+section.

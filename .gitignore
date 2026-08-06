@@ -2,6 +2,10 @@
 # only generate_sample_data.py's synthetic output belongs here; see CLAUDE.md).
 /routes/
 
+# Generated sample-data output (regenerate locally via generate_sample_data*.py; per CLAUDE.md's
+# data-hygiene rule, no generated .sqlite/.db file is ever committed).
+/output/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

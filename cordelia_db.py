@@ -1,4 +1,5 @@
-"""Shared helpers for Cordelia's SQLite schema: unit conversions and column lookups.
+"""Shared helpers for Cordelia's SQLite schema: unit conversions, column lookups, and direct
+SQLite write helpers (schema creation, single/many-row insert with real primary-key readback).
 
 Schema snapshot: cordelia source, captured 2026-08-06 (post cordelia ticket #72's fix, fossil
 commit b2a77bad4b) -- see docs/plan.md for the full encoding writeup and
@@ -8,6 +9,7 @@ in ../cordelia/src/records/*.cpp.
 """
 
 import re
+import sqlite3
 from datetime import datetime
 from pathlib import Path
 
@@ -69,51 +71,56 @@ def _check_columns(table: str, columns) -> None:
         raise ValueError(f"{table}: not real column(s): {sorted(unknown)}")
 
 
-def insert_statement(table: str, values: dict) -> str:
-    """Build one INSERT statement using only the given columns; every column not present in
-    `values` (including the autoincrement primary key, ordinarily) is left for SQLite to default
-    to NULL/assign, rather than being spelled out -- with ~85-160 columns on some of these
-    tables, writing every column on every row would bloat generated output enormously for no
-    benefit. `values` keys are checked against sql/create_tables.sql to catch typos early.
+def create_schema(conn: sqlite3.Connection) -> None:
+    """Apply sql/create_tables.sql's CREATE TABLE statements to `conn`. Idempotent (every
+    statement is CREATE TABLE IF NOT EXISTS), so safe to call against a database that already
+    has some or all of these tables.
     """
+    conn.executescript(CREATE_TABLES_SQL.read_text())
+
+
+def insert_row(conn: sqlite3.Connection, table: str, values: dict) -> int:
+    """Insert one row into `table` and return its real assigned primary key.
+
+    `values` must not include the table's own autoincrement primary key (column[0] in
+    sql/create_tables.sql -- file_number for FileID, RecordNumber for the other six tables):
+    the whole point of this helper is that SQLite assigns it, and the caller reads the real
+    value back from here, rather than the caller predicting it and hoping the prediction still
+    matches whatever SQLite actually assigned. Every other column not present in `values` is
+    left for SQLite to default to NULL -- with ~85-160 columns on some of these tables, writing
+    every column on every row would be enormous for no benefit. `values` keys are checked
+    against sql/create_tables.sql to catch typos early.
+    """
+    pk_column = table_columns(table)[0]
+    if pk_column in values:
+        raise ValueError(
+            f"{table}.{pk_column} is an autoincrement primary key; do not set it -- "
+            f"read the real value back from this function's return value instead"
+        )
     _check_columns(table, values)
     columns = list(values.keys())
-    rendered = ", ".join(sql_literal(values[c]) for c in columns)
+    placeholders = ", ".join("?" for _ in columns)
     col_list = ", ".join(columns)
-    return f"INSERT INTO {table} ({col_list}) VALUES ({rendered});"
+    cur = conn.execute(
+        f"INSERT INTO {table} ({col_list}) VALUES ({placeholders});",
+        [values[c] for c in columns],
+    )
+    return cur.lastrowid
 
 
-def insert_many_statement(table: str, columns: list[str], rows: list[dict]) -> str:
-    """Build one multi-row INSERT covering `columns` for every dict in `rows`. The column list
-    is written once rather than once per row -- for a table with many rows per generated
-    activity (Record), that matters far more than the per-row NULL-column savings above.
+def insert_many(conn: sqlite3.Connection, table: str, columns: list[str], rows: list[dict]) -> None:
+    """Insert many rows into `table`, covering `columns` for every dict in `rows`. The column
+    list is written once rather than once per row -- for a table with many rows per generated
+    activity (Record), that matters far more than the per-row NULL-column savings `insert_row`
+    gets from omitting unset columns entirely.
     """
     _check_columns(table, columns)
     col_list = ", ".join(columns)
-    value_tuples = (
-        "(" + ", ".join(sql_literal(row[c]) for c in columns) + ")" for row in rows
+    placeholders = ", ".join("?" for _ in columns)
+    conn.executemany(
+        f"INSERT INTO {table} ({col_list}) VALUES ({placeholders});",
+        [[row[c] for c in columns] for row in rows],
     )
-    values_sql = ",\n".join(value_tuples)
-    return f"INSERT INTO {table} ({col_list}) VALUES\n{values_sql};"
-
-
-def sql_literal(value) -> str:
-    """Render a Python value as a SQL literal for a hand-written INSERT statement.
-
-    Floats are rounded to 3 decimal places: plenty for meters/(m/s)/degrees-C, and Python's
-    full 17-significant-digit float repr() would otherwise bloat a file with tens of thousands
-    of generated rows for no real precision gain.
-    """
-    if value is None:
-        return "NULL"
-    if isinstance(value, bool):
-        return "1" if value else "0"
-    if isinstance(value, int):
-        return repr(value)
-    if isinstance(value, float):
-        return f"{value:.3f}"
-    escaped = str(value).replace("'", "''")
-    return f"'{escaped}'"
 
 
 def _self_check():
@@ -131,6 +138,23 @@ def _self_check():
     assert "position_lat" in table_columns("Record")
     assert "TEXT" in _column_type("Session", "start_time"), "Session.start_time should be TEXT"
     assert "TEXT" in _column_type("Lap", "start_time"), "Lap.start_time should be TEXT"
+
+    with sqlite3.connect(":memory:") as conn:
+        create_schema(conn)
+        file_number = insert_row(
+            conn, "FileID", {"path": "self-check.fit", "imported_at": ts, "time_created": ts}
+        )
+        assert file_number == 1, f"expected the first FileID row to get file_number 1, got {file_number}"
+        try:
+            insert_row(conn, "FileID", {"file_number": 99, "path": "x", "imported_at": ts})
+            raise AssertionError("insert_row should reject an explicit primary-key value")
+        except ValueError:
+            pass
+        insert_many(
+            conn, "Record", ["file_number", "Distance"], [{"file_number": file_number, "Distance": 1.0}]
+        )
+        (row_count,) = conn.execute("SELECT COUNT(*) FROM Record").fetchone()
+        assert row_count == 1, f"expected 1 Record row, got {row_count}"
 
 
 def _column_type(table: str, column: str) -> str:

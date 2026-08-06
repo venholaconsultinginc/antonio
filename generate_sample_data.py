@@ -1,11 +1,9 @@
 """Generate a synthetic Cordelia-schema-compatible dataset: one ~5 km run per day for N days,
 along a real public route, with +/-10% daily variation in pace, heart rate, cadence, temperature,
-and start time. Writes plain SQL INSERT statements to a text file -- it does not open or write to
-a SQLite database directly. Load the result into a database with sql/create_tables.sql applied
-first, e.g.:
+and start time. Writes a real SQLite database directly (schema + data, via cordelia_db.py's
+sqlite3-backed helpers) -- no intermediate SQL text file, no separate `sqlite3 ... <` step:
 
-    sqlite3 mydb.sqlite < sql/create_tables.sql
-    sqlite3 mydb.sqlite < output/sample_data.sql
+    python3 generate_sample_data.py             # writes output/sample_data.sqlite
 
 See docs/plan.md (Phase 2) for the design, and cordelia_db.py for the schema/encoding details
 this script depends on.
@@ -14,6 +12,7 @@ this script depends on.
 import argparse
 import math
 import random
+import sqlite3
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -22,7 +21,8 @@ import cordelia_db as cdb
 
 REPO_ROOT = Path(__file__).parent
 DEFAULT_ROUTE = REPO_ROOT / "data" / "route_running.gpx"
-DEFAULT_OUTPUT = REPO_ROOT / "output" / "sample_data.sql"
+DEFAULT_OUTPUT = REPO_ROOT / "output" / "sample_data.sqlite"
+DEFAULT_START_DATE = date(2026, 8, 1)
 
 GPX_NS = "{http://www.topografix.com/GPX/1/1}"
 
@@ -181,7 +181,12 @@ def simulate_day(rng: random.Random, route: Route, run_date: date) -> dict:
     return {"start_dt": start_dt, "end_dt": end_dt, "duration_s": duration_s, "samples": samples}
 
 
-def build_day_statements(file_number: int, run: dict) -> list[str]:
+def write_day(conn: sqlite3.Connection, day_index: int, run: dict) -> None:
+    """Insert one day's run into `conn`. `day_index` (1-based) is only used for the cosmetic
+    `FileID.path` label -- the real `file_number` foreign-key value used everywhere else comes
+    back from the FileID insert itself, not from this counter, so it's always exactly what
+    SQLite actually assigned.
+    """
     start_dt, end_dt, samples = run["start_dt"], run["end_dt"], run["samples"]
     duration_s = run["duration_s"]
     start_ts = cdb.to_iso8601(start_dt)
@@ -200,80 +205,72 @@ def build_day_statements(file_number: int, run: dict) -> list[str]:
     first_lat, first_lon = samples[0]["lat"], samples[0]["lon"]
     last_lat, last_lon = samples[-1]["lat"], samples[-1]["lon"]
 
-    statements = []
-
-    statements.append(
-        cdb.insert_statement(
-            "FileID",
-            {
-                "file_number": file_number,
-                "Type": FILE_TYPE_ACTIVITY,
-                "manufacturer_id": GARMIN_MANUFACTURER_ID,
-                "garmin_product_id": FORERUNNER_970_PRODUCT_ID,
-                "serial_number": DEVICE_SERIAL_NUMBER,
-                "time_created": start_ts,
-                "product_name": DEVICE_PRODUCT_NAME,
-                "path": f"synthetic/antonio_day_{file_number:02d}.fit",
-                "imported_at": cdb.to_iso8601(end_dt + timedelta(minutes=30)),
-            },
-        )
+    file_number = cdb.insert_row(
+        conn,
+        "FileID",
+        {
+            "Type": FILE_TYPE_ACTIVITY,
+            "manufacturer_id": GARMIN_MANUFACTURER_ID,
+            "garmin_product_id": FORERUNNER_970_PRODUCT_ID,
+            "serial_number": DEVICE_SERIAL_NUMBER,
+            "time_created": start_ts,
+            "product_name": DEVICE_PRODUCT_NAME,
+            "path": f"synthetic/antonio_day_{day_index:02d}.fit",
+            "imported_at": cdb.to_iso8601(end_dt + timedelta(minutes=30)),
+        },
     )
 
-    statements.append(
-        cdb.insert_statement(
-            "Activity",
-            {
-                "file_number": file_number,
-                "Timestamp": end_ts,
-                "total_timer_time": float(duration_s),
-                "num_sessions": 1,
-                "event_id": ACTIVITY_EVENT_ID,
-                "event_type": EVENT_TYPE_STOP,
-                "event_group": 0,
-            },
-        )
+    cdb.insert_row(
+        conn,
+        "Activity",
+        {
+            "file_number": file_number,
+            "Timestamp": end_ts,
+            "total_timer_time": float(duration_s),
+            "num_sessions": 1,
+            "event_id": ACTIVITY_EVENT_ID,
+            "event_type": EVENT_TYPE_STOP,
+            "event_group": 0,
+        },
     )
 
-    statements.append(
-        cdb.insert_statement(
-            "Event",
-            {
-                "file_number": file_number,
-                "Timestamp": start_ts,
-                "event_id": EVENT_ID_TIMER,
-                "event_type": EVENT_TYPE_START,
-                "event_group": 0,
-            },
-        )
+    cdb.insert_row(
+        conn,
+        "Event",
+        {
+            "file_number": file_number,
+            "Timestamp": start_ts,
+            "event_id": EVENT_ID_TIMER,
+            "event_type": EVENT_TYPE_START,
+            "event_group": 0,
+        },
     )
-    statements.append(
-        cdb.insert_statement(
-            "Event",
-            {
-                "file_number": file_number,
-                "Timestamp": end_ts,
-                "event_id": EVENT_ID_TIMER,
-                "event_type": EVENT_TYPE_STOP_ALL,
-                "event_group": 0,
-            },
-        )
+    cdb.insert_row(
+        conn,
+        "Event",
+        {
+            "file_number": file_number,
+            "Timestamp": end_ts,
+            "event_id": EVENT_ID_TIMER,
+            "event_type": EVENT_TYPE_STOP_ALL,
+            "event_group": 0,
+        },
     )
 
-    statements.append(
-        cdb.insert_statement(
-            "DeviceInfo",
-            {
-                "file_number": file_number,
-                "Timestamp": start_ts,
-                "device_index": 0,
-                "manufacturer_id": GARMIN_MANUFACTURER_ID,
-                "serial_number": DEVICE_SERIAL_NUMBER,
-                "garmin_product_id": FORERUNNER_970_PRODUCT_ID,
-                "software_version": DEVICE_SOFTWARE_VERSION,
-                "product_name": DEVICE_PRODUCT_NAME,
-                "battery_level": 87,
-            },
-        )
+    cdb.insert_row(
+        conn,
+        "DeviceInfo",
+        {
+            "file_number": file_number,
+            "Timestamp": start_ts,
+            "device_index": 0,
+            "manufacturer_id": GARMIN_MANUFACTURER_ID,
+            "serial_number": DEVICE_SERIAL_NUMBER,
+            "garmin_product_id": FORERUNNER_970_PRODUCT_ID,
+            "software_version": DEVICE_SOFTWARE_VERSION,
+            "product_name": DEVICE_PRODUCT_NAME,
+            "battery_level": 87,
+        },
     )
 
     # event_id/event_type deliberately excluded here -- Session and Lap each need their own
@@ -301,48 +298,46 @@ def build_day_statements(file_number: int, run: dict) -> list[str]:
         "event_group": 0,
     }
 
-    statements.append(
-        cdb.insert_statement(
-            "Session",
-            {
-                **session_lap_common,
-                "event_id": SESSION_EVENT_ID,
-                "event_type": EVENT_TYPE_STOP,
-                # ISO 8601 TEXT, same encoding as Timestamp -- see cordelia_db.py.
-                "start_time": start_ts,
-                "sport_id": SPORT_RUNNING,
-                "sub_sport_id": SUB_SPORT_GENERIC,
-                "min_heart_rate": round(min(heart_rates)),
-                "avg_temperature": round(sum(temps) / len(temps)),
-                "max_temperature": round(max(temps)),
-                "gps_accuracy": 3,
-                "avg_altitude": sum(elevations) / len(elevations),
-                "max_altitude": max(elevations),
-                "min_altitude": min(elevations),
-                "num_laps": 1,
-                "first_lap_index": 0,
-                "enhanced_avg_speed": sum(speeds) / len(speeds),
-                "enhanced_max_speed": max(speeds),
-                "enhanced_avg_altitude": sum(elevations) / len(elevations),
-                "enhanced_max_altitude": max(elevations),
-                "enhanced_min_altitude": min(elevations),
-            },
-        )
+    cdb.insert_row(
+        conn,
+        "Session",
+        {
+            **session_lap_common,
+            "event_id": SESSION_EVENT_ID,
+            "event_type": EVENT_TYPE_STOP,
+            # ISO 8601 TEXT, same encoding as Timestamp -- see cordelia_db.py.
+            "start_time": start_ts,
+            "sport_id": SPORT_RUNNING,
+            "sub_sport_id": SUB_SPORT_GENERIC,
+            "min_heart_rate": round(min(heart_rates)),
+            "avg_temperature": round(sum(temps) / len(temps)),
+            "max_temperature": round(max(temps)),
+            "gps_accuracy": 3,
+            "avg_altitude": sum(elevations) / len(elevations),
+            "max_altitude": max(elevations),
+            "min_altitude": min(elevations),
+            "num_laps": 1,
+            "first_lap_index": 0,
+            "enhanced_avg_speed": sum(speeds) / len(speeds),
+            "enhanced_max_speed": max(speeds),
+            "enhanced_avg_altitude": sum(elevations) / len(elevations),
+            "enhanced_max_altitude": max(elevations),
+            "enhanced_min_altitude": min(elevations),
+        },
     )
 
-    statements.append(
-        cdb.insert_statement(
-            "Lap",
-            {
-                **session_lap_common,
-                "event_id": LAP_EVENT_ID,
-                "event_type": EVENT_TYPE_STOP,
-                # ISO 8601 TEXT, same as Session.start_time -- both were historically
-                # inconsistent (cordelia ticket #72), now uniformly fixed. See cordelia_db.py.
-                "start_time": start_ts,
-                "sport_id": SPORT_RUNNING,
-            },
-        )
+    cdb.insert_row(
+        conn,
+        "Lap",
+        {
+            **session_lap_common,
+            "event_id": LAP_EVENT_ID,
+            "event_type": EVENT_TYPE_STOP,
+            # ISO 8601 TEXT, same as Session.start_time -- both were historically
+            # inconsistent (cordelia ticket #72), now uniformly fixed. See cordelia_db.py.
+            "start_time": start_ts,
+            "sport_id": SPORT_RUNNING,
+        },
     )
 
     record_columns = [
@@ -374,37 +369,31 @@ def build_day_statements(file_number: int, run: dict) -> list[str]:
         }
         for s in samples
     ]
-    statements.append(cdb.insert_many_statement("Record", record_columns, record_rows))
-
-    return statements
+    cdb.insert_many(conn, "Record", record_columns, record_rows)
 
 
 def generate(days: int, start_date: date, seed: int, route_path: Path, output_path: Path) -> None:
+    """Write a fresh SQLite database to `output_path`, overwriting any existing file there --
+    same "always overwrite" semantics as the old .sql-text output, just applied to a real
+    database file instead. All data is fabricated; no real person, device, or activity is
+    represented.
+    """
     route = Route(load_route(route_path))
     rng = random.Random(seed)
 
-    lines = [
-        "-- Synthetic Cordelia sample data generated by generate_sample_data.py.",
-        f"-- {days} daily ~{route.length_m / 1000:.2f} km runs starting {start_date.isoformat()},",
-        f"-- route: {route_path.name} (see data/SOURCES.md), seed={seed}.",
-        "-- Apply sql/create_tables.sql to an empty database before this file.",
-        "-- All data is fabricated; no real person, device, or activity is represented.",
-        "",
-        "BEGIN TRANSACTION;",
-        "",
-    ]
-
-    for day_index in range(1, days + 1):
-        run_date = start_date + timedelta(days=day_index - 1)
-        run = simulate_day(rng, route, run_date)
-        lines.append(f"-- Day {day_index}: {run_date.isoformat()}")
-        lines.extend(build_day_statements(day_index, run))
-        lines.append("")
-
-    lines.append("COMMIT;")
-
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text("\n".join(lines) + "\n")
+    output_path.unlink(missing_ok=True)
+
+    conn = sqlite3.connect(output_path)
+    try:
+        cdb.create_schema(conn)
+        with conn:
+            for day_index in range(1, days + 1):
+                run_date = start_date + timedelta(days=day_index - 1)
+                run = simulate_day(rng, route, run_date)
+                write_day(conn, day_index, run)
+    finally:
+        conn.close()
 
 
 def main():
@@ -413,17 +402,16 @@ def main():
     parser.add_argument(
         "--start-date",
         type=date.fromisoformat,
-        default=None,
-        help="first run's date, YYYY-MM-DD (default: today minus (days-1))",
+        default=DEFAULT_START_DATE,
+        help=f"first run's date, YYYY-MM-DD (default: {DEFAULT_START_DATE.isoformat()})",
     )
     parser.add_argument("--seed", type=int, default=970, help="random seed, for reproducible output (default: 970)")
     parser.add_argument("--route", type=Path, default=DEFAULT_ROUTE, help="GPX route file to run along")
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT, help="output .sql file path")
+    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT, help="output .sqlite database path")
     args = parser.parse_args()
 
-    start_date = args.start_date or (date.today() - timedelta(days=args.days - 1))
-    generate(args.days, start_date, args.seed, args.route, args.output)
-    print(f"wrote {args.output}")
+    generate(args.days, args.start_date, args.seed, args.route, args.output)
+    print(f"wrote {args.days} days of {args.route.name} runs to {args.output} (seed={args.seed})")
 
 
 if __name__ == "__main__":
