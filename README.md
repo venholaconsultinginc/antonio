@@ -35,4 +35,7 @@ in this repo needs it yet.
 
 ## Data hygiene
 
-This repo never contains real personal fitness data — see `CLAUDE.md`.
+This repo never contains real personal fitness data — the only databases anyone runs a report
+script here against are either a real Cordelia database of their own (never touches this repo) or
+a fabricated demo database from
+[`data_generators`](https://github.com/venholaconsultinginc/data_generators) (private).
