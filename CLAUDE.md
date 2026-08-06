@@ -5,7 +5,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working in this
 ## What this repo is
 
 `antonio` is a small, public set of Python example scripts ("seed" examples) showing how to query
-a **Cordelia** SQLite database and produce basic report plots. It is not a maintained analytics
+a **Cordelia** SQLite database and produce basic report plots. **Python only, deliberately** — an
+earlier draft plan considered a scoped Julia example track alongside Python; reconsidered and
+dropped 2026-08-06 (Julia's too obscure for this audience next to Python's much wider reach). Don't
+reintroduce a Julia track without a fresh decision to do so. It is not a maintained analytics
 tool, and it does not generate its own demo data — that lives in a separate, private sibling repo,
 [`data_generators`](https://github.com/venholaconsultinginc/data_generators)
 (`venholaconsultinginc/data_generators`), moved out of antonio entirely on 2026-08-06 since none of
