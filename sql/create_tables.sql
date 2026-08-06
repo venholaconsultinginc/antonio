@@ -1,11 +1,9 @@
 -- Cordelia SQLite schema subset used by the antonio sample-data generators.
 -- Extracted verbatim (string-literal-concatenated in the C++ source, joined here)
--- from cordelia/src/records/*.cpp on 2026-08-05. See ../docs/plan.md for which
--- of Cordelia's ~120 tables these nine are and why.
---
--- FileCreator and Sport added 2026-08-05 for the cycling generator (a real Edge
--- 1040-recorded ride populates both); the original seven cover one running or
--- cycling activity's core data on their own.
+-- from cordelia/src/records/*.cpp on 2026-08-06 (post cordelia ticket #72 fix,
+-- fossil commit b2a77bad4b: all timestamp-semantic columns standardized on
+-- ISO8601DateTime/TEXT). See ../docs/plan.md for which of Cordelia's ~120
+-- tables these nine are and why.
 --
 -- Schema drift warning: cordelia is under active development. Before relying on
 -- this file, diff it against the current CREATE TABLE statements in
@@ -125,7 +123,7 @@ CREATE TABLE IF NOT EXISTS Session (
     Timestamp TEXT,
     event_id INTEGER,
     event_type INTEGER,
-    start_time INTEGER,
+    start_time TEXT,
     start_position_lat INTEGER,
     start_position_long INTEGER,
     sport_id INTEGER,
@@ -504,7 +502,6 @@ CREATE TABLE IF NOT EXISTS Record (
     core_temperature REAL
 );
 
-
 CREATE TABLE IF NOT EXISTS FileCreator (
     RecordNumber INTEGER PRIMARY KEY AUTOINCREMENT,
     file_number INTEGER,
@@ -519,3 +516,4 @@ CREATE TABLE IF NOT EXISTS Sport (
     sub_sport_id INTEGER,
     Name TEXT
 );
+

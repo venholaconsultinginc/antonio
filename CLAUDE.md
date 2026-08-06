@@ -35,36 +35,30 @@ diff the relevant `CREATE TABLE` statements in `../cordelia/src/records/*.cpp` a
 copied here first — `cordelia` is under active development and this repo does not track it
 automatically.
 
-Four encoding rules matter more than anything else in this codebase, because getting them wrong
+Three encoding rules matter more than anything else in this codebase, because getting them wrong
 produces a database that opens fine but is silently corrupt:
 
 1. **GPS is semicircle-encoded**, not plain degrees: `position_lat`/`position_long` are `INTEGER`
    int32, `semicircles = round(degrees * 2^31 / 180)`.
-2. **Two time encodings coexist, and the declared column type is not a reliable guide to which one
-   a given column actually uses** — confirmed both ways against a real Cordelia-produced database,
-   not just by reading source. `Timestamp`-style columns are fixed 19-char TEXT
-   `YYYY-MM-DDTHH:MM:SS` (UTC, no offset). The other encoding is the **Garmin epoch** (seconds
-   since 1989-12-31 UTC, i.e. Unix time minus `631065600`). But:
-   - `Session.start_time` is declared `INTEGER`, yet is actually bound/read as ISO 8601 TEXT
-     (`session.cpp:1109,1764`) — same encoding as `Timestamp`, despite the declared type.
-   - `Lap.start_time` is declared `TEXT`, yet is actually bound/read as a Garmin-epoch `INTEGER`
-     (`cordelia/src/records/lap.cpp:903,1426`) — the reverse mismatch.
+2. **Every timestamp-semantic column is ISO 8601 TEXT**, fixed 19-char
+   `YYYY-MM-DDTHH:MM:SS` (UTC, no offset) — including `Session.start_time` and `Lap.start_time`,
+   which is worth calling out only because it wasn't always true. Both were declared/actual-type
+   mismatches (`Session.start_time` said `INTEGER` but held ISO 8601 text; `Lap.start_time` said
+   `TEXT` but held a raw Garmin-epoch integer) discovered while building this repo — see cordelia
+   ticket #72, fixed 2026-08-06 (fossil commit `b2a77bad4b`), which standardized every
+   timestamp-semantic column in `cordelia`'s schema on `ISO8601DateTime`/`TEXT`. There is no
+   Garmin-epoch-integer encoding left anywhere in the tables this repo touches. The lesson still
+   stands for any *new* column this repo starts populating: don't assume a `CREATE TABLE` type
+   is a reliable guide without checking the real bind/extract call, or real data — that class of
+   drift is always possible elsewhere in `cordelia`'s ~120 tables.
+3. `FileID` requires a distinct `(serial_number, time_created)` pair per activity, and `Session`/
+   `Lap`/`Activity` each have their own `event_id`/`event_type` pair, distinct from the `Event`
+   table's generic timer values (`event_id=0`, `event_type` 0/4 for start/stop_all). Confirmed
+   against real data: `Session.event_id=8`, `Lap.event_id=9`, `Activity.event_id=26`, all with
+   `event_type=1` — don't reuse the `Event` table's timer constants for these three tables' own
+   fields.
 
-   Nothing in the schema enforces agreement between related columns — that's on the code that
-   writes them. Never infer a column's actual encoding from its `CREATE TABLE` type; check the
-   real bind/extract call, or real data.
-3. `FileID` requires a distinct `(serial_number, time_created)` pair per activity.
-4. **`Session`, `Lap`, and `Activity` each have their own `event_id`/`event_type` pair, distinct
-   from the `Event` table's generic timer values.** The `Event` table's start/stop rows do use
-   `event_id=0` (timer), `event_type` 0/4 (start/stop_all). But `Session.event_id=8`,
-   `Lap.event_id=9`, `Activity.event_id=26`, all with `event_type=1` — confirmed against real
-   data. Don't reuse the `Event` table's timer constants for these three tables' own fields.
-
-All conversions belong in `cordelia_db.py`, not reimplemented per script. When deriving a
-Garmin-epoch integer from the same instant as an ISO 8601 TEXT column, use
-`cordelia_db.naive_utc_to_unix()`, not `datetime.timestamp()` — the latter interprets a naive
-datetime in the host machine's local timezone and will silently make the two encodings disagree
-depending on where the script runs (caught during this repo's own Phase 5 validation).
+All conversions belong in `cordelia_db.py`, not reimplemented per script.
 
 ## Style
 
@@ -96,7 +90,7 @@ Report/plotting scripts (Phase 3 in `docs/plan.md`) don't exist yet — `require
 
 No test suite — validation is running the pipeline end to end and checking the output looks sane
 (closed-loop route, pace/HR/temperature within their +/-10% bands, distance matching the route
-length, GPS bounding box matching the real-world location, the Garmin-epoch and ISO 8601 time
-columns agreeing with each other), per `docs/plan.md`'s Phase 5. For the cycling generator
-specifically, also cross-check against the real reference database's actual column population
-before trusting a new field — see Phase 2b's writeup for what's already been verified.
+length, GPS bounding box matching the real-world location, `Session.start_time`/`Lap.start_time`
+agreeing with `Timestamp`), per `docs/plan.md`'s Phase 5. For the cycling generator specifically,
+also cross-check against the real reference database's actual column population before trusting
+a new field — see Phase 2b's writeup for what's already been verified.

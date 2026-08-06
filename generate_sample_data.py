@@ -186,7 +186,6 @@ def build_day_statements(file_number: int, run: dict) -> list[str]:
     duration_s = run["duration_s"]
     start_ts = cdb.to_iso8601(start_dt)
     end_ts = cdb.to_iso8601(end_dt)
-    start_garmin = cdb.unix_to_garmin_time(cdb.naive_utc_to_unix(start_dt))
 
     speeds = [s["speed"] for s in samples]
     heart_rates = [s["heart_rate"] for s in samples]
@@ -309,12 +308,7 @@ def build_day_statements(file_number: int, run: dict) -> list[str]:
                 **session_lap_common,
                 "event_id": SESSION_EVENT_ID,
                 "event_type": EVENT_TYPE_STOP,
-                # Declared INTEGER in the schema, but cordelia actually binds/reads this as an
-                # ISO 8601 TEXT string, same encoding as Timestamp -- confirmed against a real
-                # Cordelia-produced database (session.cpp:1109 bind_string, :1764
-                # ISO8601DateTime::from_string). Previously written here as a Garmin-epoch
-                # integer, which was wrong -- see cordelia_db.py's GARMIN_EPOCH_OFFSET comment
-                # and docs/plan.md.
+                # ISO 8601 TEXT, same encoding as Timestamp -- see cordelia_db.py.
                 "start_time": start_ts,
                 "sport_id": SPORT_RUNNING,
                 "sub_sport_id": SUB_SPORT_GENERIC,
@@ -343,12 +337,9 @@ def build_day_statements(file_number: int, run: dict) -> list[str]:
                 **session_lap_common,
                 "event_id": LAP_EVENT_ID,
                 "event_type": EVENT_TYPE_STOP,
-                # Declared TEXT in the schema, but cordelia's own Lap::insert() binds this as a
-                # plain int32 (Garmin-epoch, same as -- despite the type mismatch running the
-                # other way -- what Session.start_time actually is too). SQLite's TEXT-affinity
-                # coercion then stores it as the integer's text digits, not an ISO 8601 string.
-                # Confirmed against cordelia/src/records/lap.cpp:903 and :1426. See docs/plan.md.
-                "start_time": start_garmin,
+                # ISO 8601 TEXT, same as Session.start_time -- both were historically
+                # inconsistent (cordelia ticket #72), now uniformly fixed. See cordelia_db.py.
+                "start_time": start_ts,
                 "sport_id": SPORT_RUNNING,
             },
         )

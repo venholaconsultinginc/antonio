@@ -1,32 +1,18 @@
 """Shared helpers for Cordelia's SQLite schema: unit conversions and column lookups.
 
-Schema snapshot: cordelia source, captured 2026-08-05 -- see docs/plan.md for the full
-encoding writeup and docs/objectives-and-requirements.md for why this module exists.
-Before trusting this against a real cordelia checkout, diff sql/create_tables.sql against
-the current CREATE TABLE statements in ../cordelia/src/records/*.cpp.
+Schema snapshot: cordelia source, captured 2026-08-06 (post cordelia ticket #72's fix, fossil
+commit b2a77bad4b) -- see docs/plan.md for the full encoding writeup and
+docs/objectives-and-requirements.md for why this module exists. Before trusting this against a
+real cordelia checkout, diff sql/create_tables.sql against the current CREATE TABLE statements
+in ../cordelia/src/records/*.cpp.
 """
 
 import re
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 
 SQL_DIR = Path(__file__).parent / "sql"
 CREATE_TABLES_SQL = SQL_DIR / "create_tables.sql"
-
-# Seconds between the Unix epoch (1970-01-01 UTC) and the Garmin/FIT epoch (1989-12-31 UTC).
-#
-# This schema's declared column type is NOT a reliable guide to which encoding a given time
-# column actually uses -- confirmed in both directions against a real Cordelia-produced
-# database, not just by reading source:
-#   - Session.start_time is declared INTEGER, but cordelia binds/reads it as ISO 8601 TEXT
-#     (session.cpp:1109 bind_string, :1764 ISO8601DateTime::from_string) -- same encoding as
-#     Timestamp, via to_iso8601() below, despite the column's declared type.
-#   - Lap.start_time is declared TEXT, but cordelia binds/reads it as a Garmin-epoch INTEGER
-#     (lap.cpp:903 bind_integer32, :1426 extract_integer32) -- the Garmin epoch conversions
-#     below apply here, despite the column's declared type.
-# Always check the actual bind/extract call (or real data) per column; don't infer from the
-# CREATE TABLE type. See docs/plan.md's encoding-rules section for the full writeup.
-GARMIN_EPOCH_OFFSET = 631065600
 
 
 def degrees_to_semicircles(degrees: float) -> int:
@@ -38,14 +24,6 @@ def semicircles_to_degrees(semicircles: int) -> float:
     return semicircles * 180 / (2**31)
 
 
-def unix_to_garmin_time(unix_seconds: int) -> int:
-    return unix_seconds - GARMIN_EPOCH_OFFSET
-
-
-def garmin_time_to_unix(garmin_seconds: int) -> int:
-    return garmin_seconds + GARMIN_EPOCH_OFFSET
-
-
 def to_iso8601(dt: datetime) -> str:
     """Cordelia's fixed 19-char TEXT timestamp format: YYYY-MM-DDTHH:MM:SS, UTC, no offset.
 
@@ -53,19 +31,16 @@ def to_iso8601(dt: datetime) -> str:
     of a different length or with separators in different positions -- see
     cordelia/src/core/iso8601_datetime.cpp:40-54.
 
+    Every timestamp-semantic column this repo writes uses this same encoding, including
+    Session.start_time and Lap.start_time -- both were historically inconsistent (see cordelia
+    ticket #72, closed/fixed 2026-08-06) but are now uniformly ISO8601DateTime/TEXT, same as
+    every other timestamp column. There is no more Garmin-epoch-integer encoding anywhere in
+    the tables this repo touches.
+
     `dt` is treated as naive wall-clock UTC -- it is formatted as-is, with no timezone
-    conversion. Callers that also need the same instant as a Garmin-epoch INTEGER (Session/Lap
-    start_time) must derive it with naive_utc_to_unix() below, not datetime.timestamp(), which
-    interprets a naive datetime in the *host machine's* local timezone and would silently make
-    the two encodings disagree depending on where this script happens to run.
+    conversion.
     """
     return dt.strftime("%Y-%m-%dT%H:%M:%S")
-
-
-def naive_utc_to_unix(dt: datetime) -> int:
-    """Unix seconds for a naive datetime already understood to be UTC (see to_iso8601()) --
-    independent of the host machine's local timezone, unlike datetime.timestamp()."""
-    return int(dt.replace(tzinfo=timezone.utc).timestamp())
 
 
 def table_columns(table_name: str) -> list[str]:
@@ -147,18 +122,28 @@ def _self_check():
         back = semicircles_to_degrees(semis)
         assert abs(back - deg) < 1e-4, f"GPS round-trip failed for {deg}: got {back}"
 
-    unix_now = 1_800_000_000
-    assert garmin_time_to_unix(unix_to_garmin_time(unix_now)) == unix_now, "epoch round-trip failed"
-
     sample_dt = datetime(2026, 8, 5, 9, 0, 0)
     ts = to_iso8601(sample_dt)
     assert len(ts) == 19 and ts[10] == "T", f"unexpected timestamp format: {ts}"
-    # naive_utc_to_unix() must not depend on the host machine's local timezone.
-    assert naive_utc_to_unix(sample_dt) == 1785920400, naive_utc_to_unix(sample_dt)
 
     assert table_columns("FileID")[0] == "file_number"
     assert table_columns("Record")[0] == "RecordNumber"
     assert "position_lat" in table_columns("Record")
+    assert "TEXT" in _column_type("Session", "start_time"), "Session.start_time should be TEXT"
+    assert "TEXT" in _column_type("Lap", "start_time"), "Lap.start_time should be TEXT"
+
+
+def _column_type(table: str, column: str) -> str:
+    """Declared type for one column -- used only by the self-check above, to catch a schema
+    regression on either of the two columns cordelia ticket #72 fixed."""
+    sql = CREATE_TABLES_SQL.read_text()
+    match = re.search(rf"CREATE TABLE IF NOT EXISTS {table} \((.*?)\n\);", sql, re.DOTALL)
+    for line in match.group(1).splitlines():
+        line = line.strip().rstrip(",")
+        parts = line.split()
+        if parts and parts[0] == column:
+            return parts[1]
+    raise ValueError(f"{table}.{column} not found")
 
 
 _self_check()

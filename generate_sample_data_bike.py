@@ -144,7 +144,6 @@ def build_ride_statements(file_number: int, run: dict) -> list[str]:
     duration_s = run["duration_s"]
     start_ts = cdb.to_iso8601(start_dt)
     end_ts = cdb.to_iso8601(end_dt)
-    start_garmin = cdb.unix_to_garmin_time(cdb.naive_utc_to_unix(start_dt))
 
     speeds = [s["speed"] for s in samples]
     heart_rates = [s["heart_rate"] for s in samples]
@@ -345,8 +344,7 @@ def build_ride_statements(file_number: int, run: dict) -> list[str]:
                 **session_lap_common,
                 "event_id": SESSION_EVENT_ID,
                 "event_type": EVENT_TYPE_STOP,
-                # ISO 8601 TEXT despite the INTEGER column declaration -- see cordelia_db.py's
-                # GARMIN_EPOCH_OFFSET comment and docs/plan.md.
+                # ISO 8601 TEXT, same encoding as Timestamp -- see cordelia_db.py.
                 "start_time": start_ts,
                 "nec_lat": cdb.degrees_to_semicircles(max(s["lat"] for s in samples)),
                 "nec_long": cdb.degrees_to_semicircles(max(s["lon"] for s in samples)),
@@ -367,9 +365,9 @@ def build_ride_statements(file_number: int, run: dict) -> list[str]:
                 **session_lap_common,
                 "event_id": LAP_EVENT_ID,
                 "event_type": EVENT_TYPE_STOP,
-                # Garmin-epoch INTEGER despite the TEXT column declaration -- confirmed
-                # cordelia/src/records/lap.cpp:903,1426. See docs/plan.md.
-                "start_time": start_garmin,
+                # ISO 8601 TEXT, same as Session.start_time -- both were historically
+                # inconsistent (cordelia ticket #72), now uniformly fixed. See cordelia_db.py.
+                "start_time": start_ts,
                 "lap_trigger": LAP_TRIGGER_SESSION_END,
             },
         )

@@ -34,28 +34,22 @@ These are the parts most likely to produce a database that *looks* right but sil
 1. **GPS is semicircle-encoded.** `position_lat`/`position_long` in `Record` are `INTEGER`
    (int32), not plain degrees: `semicircles = round(degrees * 2^31 / 180)`. Documented across
    several `cordelia` record types' `.ixx` files (`record.ixx`, `session.ixx`, `lap.ixx`, etc.).
-2. **Two incompatible time encodings coexist, and the column's declared type does not reliably
-   tell you which one a given column uses.** `Timestamp`-style columns are fixed 19-character
-   TEXT, `YYYY-MM-DDTHH:MM:SS`, UTC, no offset — `ISO8601DateTime::try_from_string`
+2. **All timestamp-semantic columns are ISO 8601 TEXT.** Fixed 19-character
+   `YYYY-MM-DDTHH:MM:SS`, UTC, no offset — `ISO8601DateTime::try_from_string`
    (`cordelia/src/core/iso8601_datetime.cpp:40-54`) validates the exact length and separator
-   positions and will reject anything else. The other encoding is the **Garmin epoch** (seconds
-   since 1989-12-31 UTC, offset `631065600` from Unix time — `iso8601_datetime.cpp:10,25-28`).
-   Nothing in the schema itself enforces agreement between related columns; that's entirely on
-   the generator. Originally documented here (wrongly) as "`Session.start_time` and similar
-   `INTEGER` fields use the Garmin epoch" — corrected 2026-08-05 after cross-checking against a
-   real Cordelia-produced database, not just the declared column types:
-   - `Session.start_time` is declared `INTEGER` but is actually bound/read as ISO 8601 TEXT
-     (`session.cpp:1109` `bind_string`, `:1764` `ISO8601DateTime::from_string`) — same encoding
-     as `Timestamp`, despite the declared type.
-   - `Lap.start_time` is declared `TEXT` but is actually bound/read as a Garmin-epoch `INTEGER`
-     (`lap.cpp:903` `bind_integer32`, `:1426` `extract_integer32`) — the reverse mismatch.
-   - `Activity.local_timestamp` (declared `TEXT`) is a Garmin-epoch integer too, but in the
-     *local* timezone rather than UTC — not currently populated by this repo's generators
-     (left `NULL`), since deriving a correct local-time offset for a fabricated device/location
-     isn't worth the complexity for seed data.
-
-   The lesson: check the actual bind/extract call, or real data, per column — never infer the
-   encoding from the `CREATE TABLE` type.
+   positions and will reject anything else. This wasn't always true: `Session.start_time` was
+   declared `INTEGER` while actually storing ISO 8601 text, and `Lap.start_time` was declared
+   `TEXT` while actually storing a raw Garmin-epoch integer — two schema/implementation
+   mismatches discovered while building this repo (see `cordelia`'s ticket #72). Both were fixed
+   2026-08-06 (fossil commit `b2a77bad4b`), which standardized every timestamp-semantic column
+   across the whole schema — including several outside the tables this repo tracks
+   (`Activity.local_timestamp`, `Monitoring*`, `TimestampCorrelation`) — on `ISO8601DateTime`/
+   `TEXT`. There is no more Garmin-epoch-integer encoding anywhere in the tables this repo
+   touches; `cordelia_db.py`'s Garmin-epoch conversion functions were retired along with it.
+   The lesson for future schema work here remains: check the actual bind/extract call, or real
+   data, per column — a declared `CREATE TABLE` type was not a reliable guide before this fix,
+   and a repeat of the same class of drift elsewhere in `cordelia`'s ~120 tables is always
+   possible.
 3. **`FileID` uniqueness.** `UNIQUE(serial_number, time_created)` means each of the 30 days needs a
    distinct `time_created`, which falls out naturally from generating one activity per calendar
    day.
@@ -79,15 +73,19 @@ report script gets them for free instead of re-deriving them.
 
 ### Phase 1 — Shared DB helper module (done, 2026-08-05)
 
-- `cordelia_db.py`: semicircle ↔ decimal-degrees, Garmin-epoch ↔ Unix time, ISO 8601 TEXT
-  formatting, and `INSERT` statement building (`sql/create_tables.sql` holds the `CREATE TABLE`
-  statements themselves, extracted verbatim from `cordelia`, rather than duplicating them here).
-- A round-trip self-check runs at import time (GPS and epoch conversions, timestamp format,
-  column-list parsing) so a conversion bug fails loudly on import instead of producing a
-  plausible-looking wrong map. Note: this phase originally scoped only *reading* a live SQLite
-  file; what actually got built first is the write-side (INSERT-building) half, since Phase 2
-  needed it immediately and Phase 3 (which needs the read side) hasn't started. The two live in
-  the same module by design — see the module docstring.
+- `cordelia_db.py`: semicircle ↔ decimal-degrees, ISO 8601 TEXT formatting, and `INSERT`
+  statement building (`sql/create_tables.sql` holds the `CREATE TABLE` statements themselves,
+  extracted verbatim from `cordelia`, rather than duplicating them here). Originally also carried
+  Garmin-epoch ↔ Unix time conversions for `Lap.start_time`; retired 2026-08-06 once cordelia
+  ticket #72's fix made every timestamp-semantic column uniformly ISO 8601 TEXT (see the
+  encoding-rules section above) and that conversion had nothing left to do.
+- A round-trip self-check runs at import time (GPS conversion, timestamp format, column-list
+  parsing, and that `Session`/`Lap.start_time` are still declared `TEXT`) so a conversion bug or
+  schema regression fails loudly on import instead of producing a plausible-looking wrong map.
+  Note: this phase originally scoped only *reading* a live SQLite file; what actually got built
+  first is the write-side (INSERT-building) half, since Phase 2 needed it immediately and Phase 3
+  (which needs the read side) hasn't started. The two live in the same module by design — see the
+  module docstring.
 
 ### Phase 2 — Synthetic data generator (done, 2026-08-05)
 

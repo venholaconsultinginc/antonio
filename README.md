@@ -60,7 +60,7 @@ represented.
 | Path | Contents |
 |---|---|
 | `sql/create_tables.sql` | The nine Cordelia tables these generators touch, extracted from the `cordelia` source. |
-| `cordelia_db.py` | Shared schema/encoding helpers (semicircle GPS, Garmin-epoch time, ISO 8601 timestamps, SQL statement building). |
+| `cordelia_db.py` | Shared schema/encoding helpers (semicircle GPS, ISO 8601 timestamps, SQL statement building). |
 | `generate_sample_data.py` | The running data generator. |
 | `generate_sample_data_bike.py` | The cycling data generator (imports `Route`/`load_route` from the running generator). |
 | `data/route_running.gpx` | A real public 5K route used as the running loop; see `data/SOURCES.md` for provenance. |
