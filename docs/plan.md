@@ -93,7 +93,7 @@ report script gets them for free instead of re-deriving them.
 
 - `generate_sample_data.py`, CLI-driven: output path, number of days (default 30), random seed
   (default 970, for reproducible example output), start date (default: today minus (days-1)).
-- Route: `data/route.gpx`, a real public route named "5K Run for the Cure" in Ottawa (CIBC Run for
+- Route: `data/route_running.gpx`, a real public route named "5K Run for the Cure" in Ottawa (CIBC Run for
   the Cure, a Canadian Cancer Society charity run) — see `data/SOURCES.md` for provenance. ~5.03 km,
   48 waypoints with elevation, walked once per simulated run at 1 Hz for `Record` rows.
 - Pace, heart rate, cadence, and temperature each get one uniform +/-10% multiplier per day off a
@@ -108,6 +108,58 @@ report script gets them for free instead of re-deriving them.
   ran to 101 MB for 30 days; the current version is ~5 MB).
 - Writes `FileID` → `Activity`, `Event`, `DeviceInfo`, `Session`, `Lap`, `Record` for each of the
   30 days, using `cordelia_db.py`'s conversions throughout.
+- **Corrected 2026-08-05** (same day, after cross-checking against a real Cordelia-produced
+  database while building Phase 2b below): `Session.start_time` was wrongly written as a
+  Garmin-epoch integer — it's actually ISO 8601 TEXT — and `Session`/`Lap`/`Activity`'s own
+  `event_id`/`event_type` fields wrongly reused the `Event` table's generic timer constants
+  instead of their real per-message values (8/9/26, `event_type=1`). See the encoding-rules
+  section above; regenerated and re-pushed before Phase 2b started.
+
+### Phase 2b — Cycling generator (done, 2026-08-05)
+
+- `generate_sample_data_bike.py`, built on Phase 2's `Route`/`load_route` (imported, not
+  duplicated). CLI-driven: ride dates (default 2026-09-05/12/18/26), seed (default 1040), route,
+  output path.
+- Route: `data/route_bike.gpx`, the real official "2026 Tour de Victoria 80km" road-cycling route
+  (organizer-published GPX, not reconstructed from an API response like the running route was) —
+  see `data/SOURCES.md`. ~77 km, 1832 waypoints with elevation.
+- Unlike Phase 2, whose baselines were invented, this phase's pace/heart-rate baselines (6.15 m/s,
+  155 bpm) and its device/schema population fidelity come directly from a real reference ride —
+  a real `.fit` file and its real Cordelia-imported `.sqlite`, provided locally for this purpose
+  and never committed (see `data/SOURCES.md`'s "Real reference files" section and `CLAUDE.md`'s
+  data hygiene rule). That reference revealed several real-world facts a synthetic-only approach
+  couldn't have gotten right by guessing:
+  - Real Garmin `garmin_product` codes: Edge 1040 = 3843, Venu 4 = 3865 (no placeholder needed,
+    unlike Phase 2's Forerunner 970).
+  - `sport_id=2`, `sub_sport_id=7`, `sport_profile_name="ROAD"` for road cycling — confirmed, not
+    guessed.
+  - A real Edge 1040 + paired Venu 4 (for heart rate) produces **four** `DeviceInfo` rows per
+    file: the Edge itself, an internal Edge sub-device, the Venu 4's own identity, and the Venu
+    4's ANT+ heart-rate broadcast to the Edge (generic `garmin_product_id=255`,
+    `antplus_device_type=120`) — not one row per physical device as Phase 2 assumed.
+  - A real Edge 1040 (no power meter or cadence sensor paired) writes `Power`, `Cadence`, and
+    `gps_accuracy` as explicit `0` for every `Record` row, and the same explicit-`0` pattern
+    (not `NULL`) for `DeviceInfo`'s battery fields on devices that don't report battery. It
+    populates only `enhanced_speed`/`enhanced_altitude`, never the legacy `Speed`/`Altitude`
+    fields (also explicit `0`, not `enhanced_speed`/`Speed` both carrying the real value the way
+    Phase 2 does). `Session`/`Lap` don't carry any altitude summary fields at all in this real
+    data (only `total_ascent`/`total_descent`) — also not replicated by Phase 2's design.
+  - This generator matches all of the above exactly. Two secondary realism details were
+    deliberately **not** replicated, per an explicit "keep it simple" decision: the real ride's 6
+    auto-pause start/stop `Event` pairs (one pair used instead, as in Phase 2) and its mid-ride
+    `DeviceInfo` refresh duplicating all 4 rows a second time (one set used instead). Also not
+    replicated: real auto-lap-every-5km (`lap_trigger=2`, 8 laps on the reference ride) — one lap
+    per ride instead, `lap_trigger=7` (session-end), consistent with Phase 2's "one lap is enough"
+    design.
+  - `total_training_effect`, `total_anaerobic_training_effect`, `avg_vam`, and
+    `training_load_peak` are Garmin's own derived/computed metrics, not directly-measured data —
+    left unset rather than faked.
+  - Temperature baseline (15°C) is **not** from the reference ride (a warm August afternoon); it's
+    an invented September-Victoria-morning assumption, same status as Phase 2's baselines.
+- `FileCreator` and `Sport` tables added to `sql/create_tables.sql` and populated — real data
+  showed both populated for a real ride; Phase 2 didn't include them.
+- Same output approach as Phase 2: batched `INSERT`s, only-populated-columns elsewhere, ~5.2 MB
+  for 4 rides (~49,000 `Record` rows).
 
 ### Phase 3 — Report scripts
 

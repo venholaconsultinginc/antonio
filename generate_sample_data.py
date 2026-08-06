@@ -21,7 +21,7 @@ from pathlib import Path
 import cordelia_db as cdb
 
 REPO_ROOT = Path(__file__).parent
-DEFAULT_ROUTE = REPO_ROOT / "data" / "route.gpx"
+DEFAULT_ROUTE = REPO_ROOT / "data" / "route_running.gpx"
 DEFAULT_OUTPUT = REPO_ROOT / "output" / "sample_data.sql"
 
 GPX_NS = "{http://www.topografix.com/GPX/1/1}"
