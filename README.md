@@ -58,7 +58,7 @@ in this repo needs it yet.
 | Path | Contents |
 |---|---|
 | `example-data/` | The four pre-built example databases, their checksums/signatures, and the public signing key — see "Example databases" above. |
-| `docs/` | Skeleton getting-started pages, one per sport, plus their illustrations — see [`docs/getting-started.md`](docs/getting-started.md). |
+| `docs/` | Skeleton getting-started pages (one per sport, plus obtaining data), plus their illustrations — see [`docs/getting-started.md`](docs/getting-started.md). |
 | `requirements.txt` | Forward declaration for the report scripts (pandas, matplotlib). |
 
 ## Data hygiene

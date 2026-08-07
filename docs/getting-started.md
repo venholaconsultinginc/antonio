@@ -4,7 +4,8 @@
 finished thing. Fill in as Phase 3 report scripts land; see each sport page for what's still a
 placeholder.*
 
-`antonio` shows how to query a Cordelia SQLite database and produce basic reports, in Python. Pick
+`antonio` shows how to query a Cordelia SQLite database and produce basic reports, in Python. Don't
+have a database to work with yet? See [obtaining-data.md](obtaining-data.md) first. Otherwise, pick
 the sport closest to your own data to see it worked through end to end:
 
 | Sport | Example database | Guide |
