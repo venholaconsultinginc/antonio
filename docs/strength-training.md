@@ -5,12 +5,13 @@
 *Skeleton page — placeholder for the strength-training getting-started guide, not the finished
 thing. See "Still to do" below for what's missing.*
 
+New to Python, or don't have dependencies installed yet? See [setup.md](setup.md) first.
+
 ## Example database
 
-[`cordelia-sample-strength-training.sqlite`](../example-data/cordelia-sample-strength-training.sqlite)
-— 8 sessions (51 work sets, 50 rest periods each), fabricated (no real person, device, or activity
-represented). SHA-256 checksum and GPG signature ship alongside it; see the root
-[README](../README.md#example-databases) for how to verify them.
+8 sessions (51 work sets, 50 rest periods each), fabricated (no real person, device, or activity
+represented). Download `cordelia-sample-strength-training.sqlite`, with its SHA-256 checksum and
+GPG signature, from [downloads.md](downloads.md).
 
 ```bash
 sqlite3 example-data/cordelia-sample-strength-training.sqlite
