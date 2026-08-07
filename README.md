@@ -6,9 +6,9 @@ Examples of how to generate reports using Python for a Cordelia database.
 meant to be read and copied, not a maintained tool, plus the getting-started documentation for
 them.
 
-**Status:** report/plotting scripts are not written yet. `docs/` already has the illustration
-assets prepared for the future per-sport help pages (running, biking, kayaking, strength
-training).
+**Status:** report/plotting scripts are not written yet. Skeleton getting-started pages exist for
+all four sports — see [`docs/getting-started.md`](docs/getting-started.md) — as a target for that
+work, not the finished thing.
 
 Demo data *generation* lives in a separate, private sibling repo,
 [`data_generators`](https://github.com/venholaconsultinginc/data_generators) — moved out of here
@@ -58,7 +58,7 @@ in this repo needs it yet.
 | Path | Contents |
 |---|---|
 | `example-data/` | The four pre-built example databases, their checksums/signatures, and the public signing key — see "Example databases" above. |
-| `docs/` | Illustration assets for the future per-sport help pages; getting-started documentation once written. |
+| `docs/` | Skeleton getting-started pages, one per sport, plus their illustrations — see [`docs/getting-started.md`](docs/getting-started.md). |
 | `requirements.txt` | Forward declaration for the report scripts (pandas, matplotlib). |
 
 ## Data hygiene
