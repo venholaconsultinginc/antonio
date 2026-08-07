@@ -28,7 +28,8 @@ For more on Cordelia itself — what it is, how it works, the database it produc
 
 ## What's still missing
 
-- The report/plotting scripts themselves (Phase 3 — see each sport page below for what it'll
-  show once they exist).
+- The report/plotting scripts themselves (Phase 3 — running is done, see
+  [running.md](running.md); cycling/kayaking/strength training still to come, see each sport page
+  below for what they'll show once they exist).
 - Install/setup walkthrough beyond the root README's `pip install -r requirements.txt`.
 - Troubleshooting section.
