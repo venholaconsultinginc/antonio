@@ -1,4 +1,4 @@
-<img src="antonio-with-his-laptop.svg alt="" width="220" align="right">
+<img src="antonio-with-his-laptop.svg" alt="" width="220" align="right">
 
 # Obtaining data
 
