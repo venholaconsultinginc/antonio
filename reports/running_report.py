@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Example visual report for a Cordelia RUNNING database.
 
-Prints a few basic summary metrics and writes two plots: a pace trend across
-all runs, and a GPS route map for the first run. Meant as a starting point to
-read and copy for your own reports, not a maintained tool — see antonio's
-README for that framing.
+Prints a few basic summary metrics and writes three plots: a pace trend
+across all runs, average heart rate by five-minute bucket into the run
+(across all runs), and a GPS route map for the first run. Meant as a
+starting point to read and copy for your own reports, not a maintained
+tool — see antonio's README for that framing.
 
 Usage:
     python3 reports/running_report.py
@@ -34,6 +35,22 @@ def load_sessions(conn: sqlite3.Connection) -> pd.DataFrame:
         conn,
         parse_dates=["start_time"],
     )
+
+
+def load_heart_rate(conn: sqlite3.Connection) -> pd.DataFrame:
+    records = pd.read_sql_query(
+        "SELECT file_number, Timestamp, heart_rate FROM Record WHERE heart_rate IS NOT NULL",
+        conn,
+        parse_dates=["Timestamp"],
+    )
+    run_start = records.groupby("file_number")["Timestamp"].transform("min")
+    records["elapsed_min"] = (records["Timestamp"] - run_start).dt.total_seconds() / 60
+    return records
+
+
+def heart_rate_by_bucket(records: pd.DataFrame, bucket_minutes: int = 5) -> pd.Series:
+    bucket_start = (records["elapsed_min"] // bucket_minutes * bucket_minutes).astype(int)
+    return records.groupby(bucket_start)["heart_rate"].mean().sort_index()
 
 
 def load_track(conn: sqlite3.Connection, file_number: int) -> pd.DataFrame:
@@ -80,6 +97,18 @@ def plot_pace_trend(sessions: pd.DataFrame, out_path: Path) -> None:
     plt.close(fig)
 
 
+def plot_heart_rate_by_bucket(hr_by_bucket: pd.Series, bucket_minutes: int, out_path: Path) -> None:
+    labels = [f"{start}–{start + bucket_minutes}" for start in hr_by_bucket.index]
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.bar(labels, hr_by_bucket.values)
+    ax.set_title("Average heart rate by time into the run")
+    ax.set_xlabel("Minutes into the run")
+    ax.set_ylabel("Average heart rate (bpm)")
+    fig.tight_layout()
+    fig.savefig(out_path)
+    plt.close(fig)
+
+
 def plot_route_map(track: pd.DataFrame, out_path: Path, title: str) -> None:
     fig, ax = plt.subplots(figsize=(6, 6))
     ax.plot(track["lon"], track["lat"])
@@ -118,6 +147,11 @@ def main() -> None:
         print_summary(sessions)
 
         plot_pace_trend(sessions, args.out_dir / "pace_trend.png")
+
+        bucket_minutes = 5
+        hr_records = load_heart_rate(conn)
+        hr_by_bucket = heart_rate_by_bucket(hr_records, bucket_minutes)
+        plot_heart_rate_by_bucket(hr_by_bucket, bucket_minutes, args.out_dir / "heart_rate_by_bucket.png")
 
         first_run = sessions.iloc[0]
         track = load_track(conn, int(first_run["file_number"]))

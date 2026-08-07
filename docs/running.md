@@ -2,9 +2,6 @@
 
 # Running
 
-*Partial page — the example reports below are real, but "What a running activity looks like in
-Cordelia" is still a placeholder. See "Still to do" below for what's missing.*
-
 ## Example database
 
 [`cordelia-sample-running.sqlite`](../example-data/cordelia-sample-running.sqlite) — 30
@@ -15,12 +12,6 @@ or activity represented). SHA-256 checksum and GPG signature ship alongside it; 
 ```bash
 sqlite3 example-data/cordelia-sample-running.sqlite
 ```
-
-## What a running activity looks like in Cordelia
-
-*TODO: short tour of the tables a running activity actually populates (`FileID`, `Activity`,
-`Event`, `DeviceInfo`, `Session`, `Lap`, `Record`) and the two encoding gotchas that trip people up
-first — semicircle GPS, ISO 8601 timestamps.*
 
 ## Example reports
 
@@ -41,6 +32,10 @@ Average heart rate:  145 bpm
 A pace trend across all 30 runs:
 
 ![Pace trend across 30 runs](running-pace-trend.png)
+
+Average heart rate in five-minute buckets of elapsed time, across all 30 runs:
+
+![Average heart rate by five-minute bucket into the run](running-heart-rate-by-bucket.png)
 
 And a GPS route map for the first run:
 
@@ -64,7 +59,8 @@ python3 reports/running_report.py --db path/to/your.sqlite
 By default, plots are written to `reports/output/running/`; pass `--out-dir` to write them
 somewhere else.
 
-## Still to do
+## What a running activity looks like in Cordelia
 
-- "What a running activity looks like in Cordelia" above is still a placeholder — needs the table
-  tour and the semicircle/ISO 8601 gotchas.
+The `Record` table, viewed in Cordelia, for one run:
+
+![Cordelia's Tables view, showing the Record table for a running activity](cordelia-screenshot-running-record-table.png)
