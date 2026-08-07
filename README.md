@@ -1,68 +1,40 @@
 # antonio
 
-Examples of how to generate reports using Python for a Cordelia database.
+Read a Cordelia SQLite database, get real plots and summary metrics out of it — in Python you can
+read, copy, and make your own.
 
-`antonio` is the "seed" layer for Cordelia's SQLite output: a handful of basic report scripts,
-meant to be read and copied, not a maintained tool, plus the getting-started documentation for
-them — see [`docs/namesake.md`](docs/namesake.md) for where the name comes from. For more on
-Cordelia itself, see [venholaconsulting.ca/apps/help/](https://venholaconsulting.ca/apps/help/).
+`antonio` is the "seed" layer for Cordelia's SQLite output: small, readable report scripts plus
+documentation walking through them, for anyone who knows Python and wants to start analyzing their
+own Garmin activity data (or try it out on realistic fabricated data first). It's not a library
+you install and depend on, not a framework — copy what's useful and go make it your own. See
+[`docs/namesake.md`](docs/namesake.md) for where the name comes from. For more on Cordelia itself,
+the app that produces the databases these scripts read, see
+[venholaconsulting.ca/apps/help/](https://venholaconsulting.ca/apps/help/).
 
-**Status:** report/plotting scripts are not written yet. Skeleton getting-started pages exist for
-all four sports — see [`docs/getting-started.md`](docs/getting-started.md) — as a target for that
-work, not the finished thing.
+## Python scripts to analyze and plot Garmin data in a Cordelia SQLite database
 
-Four pre-built example databases ship directly in this repo — see [`example-data/`](example-data/)
-below — so you don't need any data of your own, or to build anything yourself, just to get
-started.
+> [!TIP]
+> **New here? Start at [`docs/getting-started.md`](docs/getting-started.md)** — pick the sport
+> closest to your own activity data and see a working example end to end.
 
-## Example databases
+Each script reads a Cordelia database for one sport, prints a few basic summary metrics (total
+distance, average pace, heart rate, and the like), and writes a couple of simple plots (trend
+lines, route maps) — meant to be read and adapted for your own analysis, not run as-is forever.
+Running's script is done; cycling, kayaking, and strength training are still coming.
 
-Four pre-built, synthetic Cordelia databases, one per sport — running, cycling, kayaking, strength
-training — in [`example-data/`](example-data/):
-
-| File | Sport |
-|---|---|
-| `cordelia-sample-running.sqlite` | Running (30 daily 5&nbsp;km runs) |
-| `cordelia-sample-cycling.sqlite` | Cycling (4 rides, Tour de Victoria route) |
-| `cordelia-sample-kayaking.sqlite` | Kayaking (8 paddles) |
-| `cordelia-sample-strength-training.sqlite` | Strength training (8 sessions) |
-
-All four are entirely fabricated — no real person, device, or activity is represented.
-
-Each ships with a SHA-256 checksum and a detached GPG signature, signed with the same key used
-for Cordelia's own downloads (public key:
-[`example-data/cordelia-signing-key.asc`](example-data/cordelia-signing-key.asc)):
-
-```bash
-# from inside example-data/
-sha256sum -c cordelia-sample-running.sqlite.sha256
-
-gpg --import cordelia-signing-key.asc   # once, to trust the key
-gpg --verify cordelia-sample-running.sqlite.asc cordelia-sample-running.sqlite
-```
+Don't have a Cordelia database of your own yet? Four ready-to-download example databases (one per
+sport, entirely fabricated) are available — see [`docs/downloads.md`](docs/downloads.md).
 
 ## Setup
 
-```bash
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-`requirements.txt` (pandas, matplotlib) is a forward declaration for the report scripts — nothing
-in this repo needs it yet.
+See [`docs/setup.md`](docs/setup.md) for installing Python dependencies and checking your setup
+works.
 
 ## Repository layout
 
 | Path | Contents |
 |---|---|
-| `example-data/` | The four pre-built example databases, their checksums/signatures, and the public signing key — see "Example databases" above. |
-| `docs/` | Skeleton getting-started pages (one per sport, plus obtaining data and the namesake story), plus their illustrations — see [`docs/getting-started.md`](docs/getting-started.md). |
+| `example-data/` | The four pre-built example databases, their checksums/signatures, and the public signing key — see [`docs/downloads.md`](docs/downloads.md). |
+| `docs/` | Customer-facing documentation — start at [`docs/getting-started.md`](docs/getting-started.md). |
 | `reports/` | The report/plotting scripts, one per sport (in progress — running done, cycling/kayaking/strength training still to come). |
-| `requirements.txt` | Forward declaration for the report scripts (pandas, matplotlib). |
-
-## Data hygiene
-
-This repo never contains real personal fitness data. The four databases in `example-data/` are
-entirely fabricated — nothing in this repo is a real person's real Cordelia export. Whatever you
-run a report script against beyond those four is a real Cordelia database of your own, which never
-touches this repo.
+| `requirements.txt` | Python dependencies for the report scripts — see [`docs/setup.md`](docs/setup.md). |

@@ -5,12 +5,13 @@
 *Skeleton page — placeholder for the cycling getting-started guide, not the finished thing. See
 "Still to do" below for what's missing.*
 
+New to Python, or don't have dependencies installed yet? See [setup.md](setup.md) first.
+
 ## Example database
 
-[`cordelia-sample-cycling.sqlite`](../example-data/cordelia-sample-cycling.sqlite) — 4 rides along
-the real Tour de Victoria 80&nbsp;km road-cycling route, fabricated (no real person, device, or
-activity represented). SHA-256 checksum and GPG signature ship alongside it; see the root
-[README](../README.md#example-databases) for how to verify them.
+4 rides along the real Tour de Victoria 80&nbsp;km road-cycling route, fabricated (no real person,
+device, or activity represented). Download `cordelia-sample-cycling.sqlite`, with its SHA-256
+checksum and GPG signature, from [downloads.md](downloads.md).
 
 ```bash
 sqlite3 example-data/cordelia-sample-cycling.sqlite

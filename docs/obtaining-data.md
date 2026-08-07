@@ -8,11 +8,9 @@ Two paths, depending on whether you already have a Cordelia database of your own
 
 ## I just want to try antonio quickly
 
-Use one of the four fabricated example databases in
-[`example-data/`](../example-data/) — no Garmin device or Cordelia install required. Pick your
-sport from [getting-started.md](getting-started.md), download the matching `.sqlite` file, and
-you're working with real Cordelia-schema data in a couple of minutes. See the root
-[README](../README.md#example-databases) for the SHA-256/GPG verification steps.
+Use one of the four fabricated example databases — no Garmin device or Cordelia install required.
+See [downloads.md](downloads.md) to pick your sport, download the matching `.sqlite` file, and
+verify its checksum and signature.
 
 ## I want to use my own real activity data
 
