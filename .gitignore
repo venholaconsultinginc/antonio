@@ -220,3 +220,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# antonio report scripts write their plots here by default; not committed --
+# docs/ carries curated copies of whichever plots are worth showing.
+reports/output/
