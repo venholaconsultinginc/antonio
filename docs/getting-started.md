@@ -19,10 +19,12 @@ Already have your own Cordelia database? The same report scripts should work aga
 — nothing in `antonio` depends on the example data specifically, it's just there so you have
 something to run against before you have your own.
 
-All four example databases are fabricated (see the root [README](../README.md#example-databases)
-for what that means and how to verify them) and built by a separate, private repo,
-[`data_generators`](https://github.com/venholaconsultinginc/data_generators) — not something you
-need to touch to use antonio itself.
+All four example databases are fabricated — see the root [README](../README.md#example-databases)
+for what that means and how to verify them.
+
+For more on Cordelia itself — what it is, how it works, the database it produces — see
+[venholaconsulting.ca/apps/help/](https://venholaconsulting.ca/apps/help/). Curious where the name
+"antonio" comes from? See [namesake.md](namesake.md).
 
 ## What's still missing
 

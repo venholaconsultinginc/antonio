@@ -23,13 +23,13 @@ create one. Broadly:
 2. Import them into a Cordelia database.
 3. Point antonio's report scripts at that database instead of an example one.
 
-*TODO: link out to Cordelia's own help pages once confirmed —*
-*https://www.venholaconsulting.ca/apps/help/en/cordelia/obtaining-fit-files.html and*
-*.../creating-database.html and .../importing-fit-files.html — rather than duplicating that*
-*documentation here.*
+Cordelia's own help covers all three steps in detail — see
+[venholaconsulting.ca/apps/help/](https://venholaconsulting.ca/apps/help/). This page won't
+duplicate that documentation, just point at it.
 
 ## Still to do
 
-- Confirm the exact Cordelia help-page URLs above and turn them into real links.
+- Deep-link the specific relevant help pages above (obtaining `.FIT` files, creating a database,
+  importing) once confirmed, rather than just the general help landing page.
 - Once a report script exists, the actual "point it at your database" instructions (a `--db` flag
   or similar) belong here or on each sport page — not decided yet.
