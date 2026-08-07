@@ -10,11 +10,38 @@ them.
 assets prepared for the future per-sport help pages (running, biking, kayaking, strength
 training).
 
-Demo data generation lives in a separate, private sibling repo,
+Demo data *generation* lives in a separate, private sibling repo,
 [`data_generators`](https://github.com/venholaconsultinginc/data_generators) — moved out of here
-on 2026-08-06, since none of that machinery is customer-facing. If you want a demo `.sqlite`
-database to develop a report script against, clone that repo separately and run whichever
-generator matches the sport you're working on (running, cycling, kayaking, or strength training).
+on 2026-08-06, since none of that machinery is customer-facing. The four databases it produces are
+published here directly, though — see [`example-data/`](example-data/) below — so you don't need
+access to that private repo just to get a demo database to develop a report script against.
+
+## Example databases
+
+Four pre-built, synthetic Cordelia databases, one per sport — running, cycling, kayaking, strength
+training — in [`example-data/`](example-data/):
+
+| File | Sport |
+|---|---|
+| `cordelia-sample-running.sqlite` | Running (30 daily 5&nbsp;km runs) |
+| `cordelia-sample-cycling.sqlite` | Cycling (4 rides, Tour de Victoria route) |
+| `cordelia-sample-kayaking.sqlite` | Kayaking (8 paddles) |
+| `cordelia-sample-strength-training.sqlite` | Strength training (8 sessions) |
+
+All four are entirely fabricated — no real person, device, or activity is represented (see
+`data_generators`' own data-hygiene documentation for exactly how each was built and verified).
+
+Each ships with a SHA-256 checksum and a detached GPG signature, signed with the same key used
+for Cordelia's own downloads (public key:
+[`example-data/cordelia-signing-key.asc`](example-data/cordelia-signing-key.asc)):
+
+```bash
+# from inside example-data/
+sha256sum -c cordelia-sample-running.sqlite.sha256
+
+gpg --import cordelia-signing-key.asc   # once, to trust the key
+gpg --verify cordelia-sample-running.sqlite.asc cordelia-sample-running.sqlite
+```
 
 ## Setup
 
@@ -30,12 +57,15 @@ in this repo needs it yet.
 
 | Path | Contents |
 |---|---|
+| `example-data/` | The four pre-built example databases, their checksums/signatures, and the public signing key — see "Example databases" above. |
 | `docs/` | Illustration assets for the future per-sport help pages; getting-started documentation once written. |
 | `requirements.txt` | Forward declaration for the report scripts (pandas, matplotlib). |
 
 ## Data hygiene
 
-This repo never contains real personal fitness data — the only databases anyone runs a report
-script here against are either a real Cordelia database of their own (never touches this repo) or
-a fabricated demo database from
-[`data_generators`](https://github.com/venholaconsultinginc/data_generators) (private).
+This repo never contains real personal fitness data. The four databases in `example-data/` are
+entirely fabricated, built and verified by
+[`data_generators`](https://github.com/venholaconsultinginc/data_generators) (private) — nothing
+in this repo is a real person's real Cordelia export. Whatever you run a report script against
+beyond those four is either a real Cordelia database of your own (never touches this repo) or
+another `data_generators` output.

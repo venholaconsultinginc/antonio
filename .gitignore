@@ -1,6 +1,7 @@
-# Demo-data generation (routes/, generated .sqlite output, internal planning docs) all moved to
-# the private data_generators sibling repo on 2026-08-06 -- see CLAUDE.md. Nothing generator- or
-# planning-related is expected to exist in this working tree going forward.
+# Demo-data generation itself (routes/, internal planning docs) lives in the private
+# data_generators sibling repo, not here. The four pre-built .sqlite files under example-data/
+# ARE intentionally committed here (see README.md's "Example databases" section) -- that's the
+# one deliberate exception, not a sign this rule has been abandoned.
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
