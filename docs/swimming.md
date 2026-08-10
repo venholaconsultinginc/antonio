@@ -12,7 +12,7 @@ New to Python, or don't have dependencies installed yet? See [setup](setup.md) f
 26 sessions, one per day through August 2026 (Sundays off), 25&nbsp;m indoor pool, freestyle,
 fabricated (no real person, device, or activity represented). Download
 `cordelia-sample-swimming.sqlite`, with its SHA-256 checksum and GPG signature, from
-[the downloads page](downloads.md).
+[the downloads page](example-databases.md).
 
 ```bash
 sqlite3 example-data/cordelia-sample-swimming.sqlite

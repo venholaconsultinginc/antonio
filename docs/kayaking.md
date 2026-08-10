@@ -11,7 +11,7 @@ New to Python, or don't have dependencies installed yet? See [setup](setup.md) f
 
 8 out-and-back paddles, fabricated (no real person, device, or activity represented). Download
 `cordelia-sample-kayaking.sqlite`, with its SHA-256 checksum and GPG signature, from
-[the downloads page](downloads.md).
+[the downloads page](example-databases.md).
 
 ```bash
 sqlite3 example-data/cordelia-sample-kayaking.sqlite

@@ -15,14 +15,13 @@ closest to your own data to see it worked through end to end:
 - [<img src="icon-strength-training.svg" width="32" alt=""> Strength training](strength-training.md)
 - [<img src="icon-swimming.svg" width="32" alt=""> Swimming](swimming.md)
 
-Or see [all six databases at a glance](example-databases.md), empty one included.
+Or see [all six databases at a glance](example-databases.md) — including the empty one, plus how
+to verify each download.
 
 Already have your own Cordelia database? The same report scripts should work against it directly
 — nothing in `antonio` depends on the example data specifically, it's just there so you have
-something to run against before you have your own.
-
-All six example databases are fabricated — see [the downloads page](downloads.md) for what that
-means, how to verify them, and where to download each one.
+something to run against before you have your own. All six example databases are entirely
+fabricated — no real person, device, or activity is represented in any of them.
 
 For more on Cordelia itself — what it is, how it works, the database it produces — see
 [venholaconsulting.ca/apps/help/](https://venholaconsulting.ca/apps/help/). Curious where the name

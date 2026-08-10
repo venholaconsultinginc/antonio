@@ -23,7 +23,7 @@ lines, route maps) — meant to be read and adapted for your own analysis, not r
 Running's script is done; cycling, kayaking, and strength training are still coming.
 
 Don't have a Cordelia database of your own yet? Six ready-to-download example databases (one per
-sport plus an empty one, entirely fabricated) are available on [the downloads page](docs/downloads.md).
+sport plus an empty one, entirely fabricated) are available on [the downloads page](docs/example-databases.md).
 
 ## Setup
 
@@ -33,7 +33,7 @@ Installing Python dependencies and checking your setup works: see the [setup gui
 
 | Path | Contents |
 |---|---|
-| `example-data/` | The six pre-built example databases, their checksums/signatures, and the public signing key — see [the downloads page](docs/downloads.md). |
+| `example-data/` | The six pre-built example databases, their checksums/signatures, and the public signing key — see [the downloads page](docs/example-databases.md). |
 | `docs/` | Customer-facing documentation — start at [Getting started](docs/README.md). |
 | `reports/` | The report/plotting scripts, one per sport (in progress — running done, cycling/kayaking/strength training still to come). |
 | `requirements.txt` | Python dependencies for the report scripts — see the [setup guide](docs/setup.md). |
