@@ -71,6 +71,11 @@ somewhere else.
 
 ## What a running activity looks like in Cordelia
 
+Besides `Record` (one row per second of GPS/heart-rate data, shown below), a running activity
+populates: `FileID` (file-level metadata — device, creation time), `Activity` (one row, ties the
+file together), `Session` and `Lap` (the summary metrics the report script reads), `Event`
+(start/stop markers), and `DeviceInfo` (the recording device's details).
+
 The `Record` table, viewed in Cordelia, for one run:
 
 ![Cordelia's Tables view, showing the Record table for a running activity](cordelia-screenshot-running-record-table.png)
