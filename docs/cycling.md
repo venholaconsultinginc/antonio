@@ -25,9 +25,14 @@ Victoria 80&nbsp;km route, exported from
 
 ## What a cycling activity looks like in Cordelia
 
-*TODO: short tour of the tables a cycling activity populates (the running set plus `FileCreator`
-and `Sport`) and what's different from running (e.g. `enhanced_speed` vs. legacy `Speed`) — plus a
-Cordelia screenshot, matching running.md's.*
+The `Record` table, viewed in Cordelia, for one ride — note the `Speed` column reading `0`
+throughout; Cordelia's own `Speed` field is the legacy one, unpopulated for cycling. The report
+script above reads `enhanced_speed` instead, which is where FIT actually stores it:
+
+![Cordelia's Tables view, showing the Record table for a cycling activity](cordelia-screenshot-cycling-record-table.png)
+
+*TODO: short tour of the rest of the tables a cycling activity populates (the running set plus
+`FileCreator` and `Sport`).*
 
 ## Example reports
 
@@ -79,7 +84,7 @@ somewhere else.
 
 ## Still to do
 
-- The Cordelia-schema tour and screenshot noted above.
+- The rest of the Cordelia-schema tour noted above.
 
 ---
 
