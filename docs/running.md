@@ -14,6 +14,15 @@ checksum and GPG signature, from [downloads.md](downloads.md).
 sqlite3 example-data/cordelia-sample-running.sqlite
 ```
 
+The route itself is real: an out-and-back along the **Ottawa River Pathway**, between LeBreton
+Flats (near the Canadian War Museum) and Tunney's Pasture.
+
+![Map of the Ottawa River Pathway out-and-back route used for the running example data](ottawa-river-pathway.png)
+
+[Download the route as a GPX file](ottawa-river-pathway.gpx) — sourced from
+[OpenStreetMap](https://www.openstreetmap.org/) way data (© OpenStreetMap contributors, licensed
+[ODbL](https://opendatacommons.org/licenses/odbl/)).
+
 ## Example reports
 
 [`reports/running_report.py`](../reports/running_report.py) reads the example database above and
