@@ -26,17 +26,60 @@ Victoria 80&nbsp;km route, exported from
 ## What a cycling activity looks like in Cordelia
 
 *TODO: short tour of the tables a cycling activity populates (the running set plus `FileCreator`
-and `Sport`) and what's different from running (e.g. `enhanced_speed` vs. legacy `Speed`).*
+and `Sport`) and what's different from running (e.g. `enhanced_speed` vs. legacy `Speed`) — plus a
+Cordelia screenshot, matching running.md's.*
 
 ## Example reports
 
-*Not written yet — Phase 3. Planned: a pace-trend line plot across the 4 rides, and a GPS route
-map.*
+[`reports/cycling_report.py`](../reports/cycling_report.py) reads the example database above and
+produces a couple of basic reports — read it and copy from it as a starting point for your own.
+
+Summary metrics printed to stdout:
+
+```
+Rides:               4
+Total distance:      307.8 km
+Total time:          13.6 h
+Average speed:       22.6 km/h
+Best (fastest) ride: 24.2 km/h
+Total ascent:        3396 m
+Average heart rate:  158 bpm
+```
+
+An average-speed trend across all 4 rides:
+
+![Average speed trend across 4 rides](cycling-speed-trend.png)
+
+An elevation profile for the first ride — the Tour de Victoria route is genuinely hilly, unlike
+running's flat Ottawa River Pathway:
+
+![Elevation profile for one ride](cycling-elevation-profile.png)
+
+And a GPS route map for the first ride:
+
+![GPS route map for one ride](cycling-route-map.png)
+
+Run it yourself:
+
+```bash
+python3 reports/cycling_report.py
+```
 
 ## Using your own data
 
-*TODO: how to point whichever report script exists at your own Cordelia database instead of the
-example one.*
+The same script works against any Cordelia database, not just the bundled example — pass its path
+with `--db`:
+
+```bash
+python3 reports/cycling_report.py --db path/to/your.sqlite
+```
+
+By default, plots are written to `reports/output/cycling/`; pass `--out-dir` to write them
+somewhere else.
+
+## Still to do
+
+- The Cordelia-schema tour and screenshot noted above.
 
 ---
 
