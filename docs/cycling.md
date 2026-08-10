@@ -17,6 +17,12 @@ checksum and GPG signature, from [downloads.md](downloads.md).
 sqlite3 example-data/cordelia-sample-cycling.sqlite
 ```
 
+![Map of the Tour de Victoria 80 km route used for the cycling example data](tour-de-victoria-2026-80km.png)
+
+[Download the route as a GPX file](tour-de-victoria-2026-80km.gpx) — the official 2026 Tour de
+Victoria 80&nbsp;km route, exported from
+[RideWithGPS](https://ridewithgps.com/routes/48156781).
+
 ## What a cycling activity looks like in Cordelia
 
 *TODO: short tour of the tables a cycling activity populates (the running set plus `FileCreator`

@@ -17,6 +17,8 @@ New to Python, or don't have dependencies installed yet? See [setup.md](setup.md
 sqlite3 example-data/cordelia-sample-kayaking.sqlite
 ```
 
+![Map of the Gulf Islands kayaking route used for the kayaking example data](gulf-islands-kayaking.png)
+
 ## What a kayaking activity looks like in Cordelia
 
 *TODO: short tour of the tables a kayaking activity populates (same set as cycling) and the

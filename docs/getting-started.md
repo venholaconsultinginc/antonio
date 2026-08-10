@@ -15,12 +15,16 @@ closest to your own data to see it worked through end to end:
 | Cycling | [`cordelia-sample-cycling.sqlite`](downloads.md) | [cycling.md](cycling.md) |
 | Kayaking | [`cordelia-sample-kayaking.sqlite`](downloads.md) | [kayaking.md](kayaking.md) |
 | Strength training | [`cordelia-sample-strength-training.sqlite`](downloads.md) | [strength-training.md](strength-training.md) |
+| Swimming | [`cordelia-sample-swimming.sqlite`](downloads.md) | [swimming.md](swimming.md) |
+
+Or see [example-databases.md](example-databases.md) for all six databases (including the empty
+one) at a glance.
 
 Already have your own Cordelia database? The same report scripts should work against it directly
 — nothing in `antonio` depends on the example data specifically, it's just there so you have
 something to run against before you have your own.
 
-All five example databases are fabricated — see [downloads.md](downloads.md) for what that means,
+All six example databases are fabricated — see [downloads.md](downloads.md) for what that means,
 how to verify them, and where to download each one.
 
 For more on Cordelia itself — what it is, how it works, the database it produces — see
@@ -30,6 +34,6 @@ For more on Cordelia itself — what it is, how it works, the database it produc
 ## What's still missing
 
 - The report/plotting scripts themselves (Phase 3 — running is done, see
-  [running.md](running.md); cycling/kayaking/strength training still to come, see each sport page
-  below for what they'll show once they exist).
+  [running.md](running.md); cycling/kayaking/strength training/swimming still to come, see each
+  sport page below for what they'll show once they exist).
 - Troubleshooting section.

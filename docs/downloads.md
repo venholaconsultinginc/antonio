@@ -1,8 +1,9 @@
 # Downloading example databases
 
-Five pre-built, synthetic Cordelia databases ship directly in this repo under
+Six pre-built, synthetic Cordelia databases ship directly in this repo under
 [`example-data/`](../example-data/) — no Garmin device, no Cordelia install, and no data of your
-own required just to get started.
+own required just to get started. See [example-databases.md](example-databases.md) for an
+at-a-glance table with an icon per database.
 
 | File | Sport |
 |---|---|
@@ -10,6 +11,7 @@ own required just to get started.
 | [`cordelia-sample-cycling.sqlite`](../example-data/cordelia-sample-cycling.sqlite) | Cycling (4 rides, Tour de Victoria route) |
 | [`cordelia-sample-kayaking.sqlite`](../example-data/cordelia-sample-kayaking.sqlite) | Kayaking (8 paddles) |
 | [`cordelia-sample-strength-training.sqlite`](../example-data/cordelia-sample-strength-training.sqlite) | Strength training (8 sessions) |
+| [`cordelia-sample-swimming.sqlite`](../example-data/cordelia-sample-swimming.sqlite) | Swimming (26 sessions) |
 | [`cordelia-sample-empty.sqlite`](../example-data/cordelia-sample-empty.sqlite) | Empty (full schema, zero rows — a blank starting point) |
 
 Pick the sport closest to your own activity data, download the matching `.sqlite` file, and
@@ -34,7 +36,7 @@ Swap in whichever sport's filename you downloaded.
 
 ## Data hygiene
 
-This repo never contains real personal fitness data. The four databases above are entirely
+This repo never contains real personal fitness data. The six databases above are entirely
 fabricated — nothing in this repo is a real person's real Cordelia export. Whatever you run a
-report script against beyond those four is a real Cordelia database of your own, which never
+report script against beyond those six is a real Cordelia database of your own, which never
 touches this repo.
