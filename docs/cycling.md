@@ -2,9 +2,6 @@
 
 # Cycling
 
-*Skeleton page — placeholder for the cycling getting-started guide, not the finished thing. See
-"Still to do" below for what's missing.*
-
 New to Python, or don't have dependencies installed yet? See [setup](setup.md) first.
 
 ## Example database
@@ -31,8 +28,11 @@ script above reads `enhanced_speed` instead, which is where FIT actually stores 
 
 ![Cordelia's Tables view, showing the Record table for a cycling activity](cordelia-screenshot-cycling-record-table.png)
 
-*TODO: short tour of the rest of the tables a cycling activity populates (the running set plus
-`FileCreator` and `Sport`).*
+Besides `Record`, a cycling activity populates the same core tables as running — `FileID`,
+`Activity`, `Session`, `Lap`, `Event`, `DeviceInfo` — plus two cycling-specific ones: `FileCreator`
+(the recording device's software/hardware version) and `Sport`, which names the activity type
+directly (`ROAD` for these rides, rather than leaving you to infer it from `sport_id`/`sub_sport_id`
+codes alone).
 
 ## Example reports
 
@@ -81,10 +81,6 @@ python3 reports/cycling_report.py --db path/to/your.sqlite
 
 By default, plots are written to `reports/output/cycling/`; pass `--out-dir` to write them
 somewhere else.
-
-## Still to do
-
-- The rest of the Cordelia-schema tour noted above.
 
 ---
 
