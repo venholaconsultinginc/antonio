@@ -2,8 +2,7 @@
 
 Six pre-built, fabricated Cordelia databases — one per sport, plus a schema-only empty one — ship
 in [`example-data/`](../example-data/). No Garmin device, no Cordelia install, and no data of your
-own required just to get started. See [the downloads page](downloads.md) for checksums, GPG
-signatures, and verification steps.
+own required just to get started.
 
 | | Sport | Contents | File |
 |---|---|---|---|
@@ -14,6 +13,28 @@ signatures, and verification steps.
 | <img src="icon-swimming.svg" width="56" alt=""> | Swimming | 26 sessions, one per day through August 2026 (Sundays off), 25&nbsp;m indoor pool, freestyle<br>Aug 1–31, 2026 · indoor pool (no GPS)<br>Avg 20.9 min · 41 lengths/session | [`cordelia-sample-swimming.sqlite`](../example-data/cordelia-sample-swimming.sqlite) |
 | <img src="icon-empty.svg" width="56" alt=""> | Empty | Full schema, zero rows — a blank starting point<br>127 tables (Cordelia's full schema) | [`cordelia-sample-empty.sqlite`](../example-data/cordelia-sample-empty.sqlite) |
 
-Each is entirely fabricated — no real person, device, or activity is represented in any of them.
 Pick the sport closest to your own activity data (or the empty one, to explore the schema itself)
 and see [Getting started](README.md) for a walkthrough of each.
+
+## Verifying a download
+
+Each database ships with a SHA-256 checksum and a detached GPG signature, signed with the same
+key used for Cordelia's own downloads (public key:
+[`example-data/cordelia-signing-key.asc`](../example-data/cordelia-signing-key.asc)):
+
+```bash
+# from inside example-data/
+sha256sum -c cordelia-sample-running.sqlite.sha256
+
+gpg --import cordelia-signing-key.asc   # once, to trust the key
+gpg --verify cordelia-sample-running.sqlite.asc cordelia-sample-running.sqlite
+```
+
+Swap in whichever sport's filename you downloaded.
+
+## Data hygiene
+
+This repo never contains real personal fitness data. The six databases above are entirely
+fabricated — nothing in this repo is a real person's real Cordelia export. Whatever you run a
+report script against beyond those six is a real Cordelia database of your own, which never
+touches this repo.

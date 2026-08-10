@@ -11,7 +11,7 @@ New to Python, or don't have dependencies installed yet? See [setup](setup.md) f
 
 4 rides along the real Tour de Victoria 80&nbsp;km road-cycling route, fabricated (no real person,
 device, or activity represented). Download `cordelia-sample-cycling.sqlite`, with its SHA-256
-checksum and GPG signature, from [the downloads page](downloads.md).
+checksum and GPG signature, from [the downloads page](example-databases.md).
 
 ```bash
 sqlite3 example-data/cordelia-sample-cycling.sqlite
