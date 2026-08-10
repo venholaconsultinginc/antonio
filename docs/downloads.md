@@ -1,6 +1,6 @@
 # Downloading example databases
 
-Four pre-built, synthetic Cordelia databases, one per sport, ship directly in this repo under
+Five pre-built, synthetic Cordelia databases ship directly in this repo under
 [`example-data/`](../example-data/) — no Garmin device, no Cordelia install, and no data of your
 own required just to get started.
 
@@ -10,6 +10,7 @@ own required just to get started.
 | [`cordelia-sample-cycling.sqlite`](../example-data/cordelia-sample-cycling.sqlite) | Cycling (4 rides, Tour de Victoria route) |
 | [`cordelia-sample-kayaking.sqlite`](../example-data/cordelia-sample-kayaking.sqlite) | Kayaking (8 paddles) |
 | [`cordelia-sample-strength-training.sqlite`](../example-data/cordelia-sample-strength-training.sqlite) | Strength training (8 sessions) |
+| [`cordelia-sample-empty.sqlite`](../example-data/cordelia-sample-empty.sqlite) | Empty (full schema, zero rows — a blank starting point) |
 
 Pick the sport closest to your own activity data, download the matching `.sqlite` file, and
 you're working with real Cordelia-schema data in a couple of minutes — see

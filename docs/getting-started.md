@@ -20,7 +20,7 @@ Already have your own Cordelia database? The same report scripts should work aga
 — nothing in `antonio` depends on the example data specifically, it's just there so you have
 something to run against before you have your own.
 
-All four example databases are fabricated — see [downloads.md](downloads.md) for what that means,
+All five example databases are fabricated — see [downloads.md](downloads.md) for what that means,
 how to verify them, and where to download each one.
 
 For more on Cordelia itself — what it is, how it works, the database it produces — see
