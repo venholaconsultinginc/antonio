@@ -2,8 +2,8 @@
 
 Six pre-built, synthetic Cordelia databases ship directly in this repo under
 [`example-data/`](../example-data/) — no Garmin device, no Cordelia install, and no data of your
-own required just to get started. See [example-databases.md](example-databases.md) for an
-at-a-glance table with an icon per database.
+own required just to get started. See [the at-a-glance table with icons](example-databases.md)
+for a quick overview of all six.
 
 | File | Sport |
 |---|---|
@@ -16,7 +16,7 @@ at-a-glance table with an icon per database.
 
 Pick the sport closest to your own activity data, download the matching `.sqlite` file, and
 you're working with real Cordelia-schema data in a couple of minutes — see
-[getting-started.md](getting-started.md) for a walkthrough of each one.
+[Getting started](README.md) for a walkthrough of each one.
 
 ## Verifying a download
 

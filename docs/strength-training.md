@@ -5,13 +5,13 @@
 *Skeleton page — placeholder for the strength-training getting-started guide, not the finished
 thing. See "Still to do" below for what's missing.*
 
-New to Python, or don't have dependencies installed yet? See [setup.md](setup.md) first.
+New to Python, or don't have dependencies installed yet? See [setup](setup.md) first.
 
 ## Example database
 
 8 sessions (51 work sets, 50 rest periods each), fabricated (no real person, device, or activity
 represented). Download `cordelia-sample-strength-training.sqlite`, with its SHA-256 checksum and
-GPG signature, from [downloads.md](downloads.md).
+GPG signature, from [the downloads page](downloads.md).
 
 ```bash
 sqlite3 example-data/cordelia-sample-strength-training.sqlite
@@ -35,3 +35,7 @@ idea (e.g. weight/volume progression across sessions, or work-vs-rest time break
 
 *TODO: how to point whichever report script exists at your own Cordelia database instead of the
 example one.*
+
+---
+
+**More guides:** [Running](running.md) · [Cycling](cycling.md) · [Kayaking](kayaking.md) · [Swimming](swimming.md) — or back to [Getting started](README.md).

@@ -30,5 +30,5 @@ python3 reports/running_report.py
 ```
 
 If that prints a handful of summary metrics and writes PNGs to `reports/output/running/` without
-errors, your setup is good — head to [getting-started.md](getting-started.md) to try it against
-other sports or your own data.
+errors, your setup is good — head back to [Getting started](README.md) to try it against other
+sports or your own data.

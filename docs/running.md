@@ -2,13 +2,13 @@
 
 # Running
 
-New to Python, or don't have dependencies installed yet? See [setup.md](setup.md) first.
+New to Python, or don't have dependencies installed yet? See [setup](setup.md) first.
 
 ## Example database
 
 30 consecutive daily ~5&nbsp;km runs along a real public route, fabricated (no real person,
 device, or activity represented). Download `cordelia-sample-running.sqlite`, with its SHA-256
-checksum and GPG signature, from [downloads.md](downloads.md).
+checksum and GPG signature, from [the downloads page](downloads.md).
 
 ```bash
 sqlite3 example-data/cordelia-sample-running.sqlite
@@ -74,3 +74,7 @@ somewhere else.
 The `Record` table, viewed in Cordelia, for one run:
 
 ![Cordelia's Tables view, showing the Record table for a running activity](cordelia-screenshot-running-record-table.png)
+
+---
+
+**More guides:** [Cycling](cycling.md) · [Kayaking](kayaking.md) · [Strength training](strength-training.md) · [Swimming](swimming.md) — or back to [Getting started](README.md).

@@ -5,14 +5,14 @@
 *Skeleton page — placeholder for the swimming getting-started guide, not the finished thing. See
 "Still to do" below for what's missing.*
 
-New to Python, or don't have dependencies installed yet? See [setup.md](setup.md) first.
+New to Python, or don't have dependencies installed yet? See [setup](setup.md) first.
 
 ## Example database
 
 26 sessions, one per day through August 2026 (Sundays off), 25&nbsp;m indoor pool, freestyle,
 fabricated (no real person, device, or activity represented). Download
 `cordelia-sample-swimming.sqlite`, with its SHA-256 checksum and GPG signature, from
-[downloads.md](downloads.md).
+[the downloads page](downloads.md).
 
 ```bash
 sqlite3 example-data/cordelia-sample-swimming.sqlite
@@ -36,3 +36,7 @@ example one.*
 ## Still to do
 
 - Everything above marked TODO.
+
+---
+
+**More guides:** [Running](running.md) · [Cycling](cycling.md) · [Kayaking](kayaking.md) · [Strength training](strength-training.md) — or back to [Getting started](README.md).

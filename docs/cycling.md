@@ -5,13 +5,13 @@
 *Skeleton page — placeholder for the cycling getting-started guide, not the finished thing. See
 "Still to do" below for what's missing.*
 
-New to Python, or don't have dependencies installed yet? See [setup.md](setup.md) first.
+New to Python, or don't have dependencies installed yet? See [setup](setup.md) first.
 
 ## Example database
 
 4 rides along the real Tour de Victoria 80&nbsp;km road-cycling route, fabricated (no real person,
 device, or activity represented). Download `cordelia-sample-cycling.sqlite`, with its SHA-256
-checksum and GPG signature, from [downloads.md](downloads.md).
+checksum and GPG signature, from [the downloads page](downloads.md).
 
 ```bash
 sqlite3 example-data/cordelia-sample-cycling.sqlite
@@ -37,3 +37,7 @@ map.*
 
 *TODO: how to point whichever report script exists at your own Cordelia database instead of the
 example one.*
+
+---
+
+**More guides:** [Running](running.md) · [Kayaking](kayaking.md) · [Strength training](strength-training.md) · [Swimming](swimming.md) — or back to [Getting started](README.md).

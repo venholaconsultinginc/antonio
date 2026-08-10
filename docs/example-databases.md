@@ -2,8 +2,8 @@
 
 Six pre-built, fabricated Cordelia databases — one per sport, plus a schema-only empty one — ship
 in [`example-data/`](../example-data/). No Garmin device, no Cordelia install, and no data of your
-own required just to get started. See [downloads.md](downloads.md) for checksums, GPG signatures,
-and verification steps.
+own required just to get started. See [the downloads page](downloads.md) for checksums, GPG
+signatures, and verification steps.
 
 | | Sport | Contents | File |
 |---|---|---|---|
@@ -16,4 +16,4 @@ and verification steps.
 
 Each is entirely fabricated — no real person, device, or activity is represented in any of them.
 Pick the sport closest to your own activity data (or the empty one, to explore the schema itself)
-and see [getting-started.md](getting-started.md) for a walkthrough of each.
+and see [Getting started](README.md) for a walkthrough of each.
