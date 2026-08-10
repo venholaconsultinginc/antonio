@@ -1,3 +1,5 @@
+<img src="antonio-swimming.svg" alt="" width="220" align="right">
+
 # Swimming
 
 *Skeleton page — placeholder for the swimming getting-started guide, not the finished thing. See
@@ -33,5 +35,4 @@ example one.*
 
 ## Still to do
 
-- An `antonio-swimming.png` hero illustration (every other sport page has one).
-- Everything else above marked TODO.
+- Everything above marked TODO.
