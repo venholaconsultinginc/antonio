@@ -9,13 +9,11 @@ to Python or don't have dependencies installed yet? Start with [setup](setup.md)
 database to work with yet? See [how to get one](obtaining-data.md). Otherwise, pick the sport
 closest to your own data to see it worked through end to end:
 
-| Sport | Example database | Guide |
-|---|---|---|
-| Running | [`cordelia-sample-running.sqlite`](downloads.md) | [Guide](running.md) |
-| Cycling | [`cordelia-sample-cycling.sqlite`](downloads.md) | [Guide](cycling.md) |
-| Kayaking | [`cordelia-sample-kayaking.sqlite`](downloads.md) | [Guide](kayaking.md) |
-| Strength training | [`cordelia-sample-strength-training.sqlite`](downloads.md) | [Guide](strength-training.md) |
-| Swimming | [`cordelia-sample-swimming.sqlite`](downloads.md) | [Guide](swimming.md) |
+- [<img src="icon-running.svg" width="32" alt=""> Running](running.md)
+- [<img src="icon-cycling.svg" width="32" alt=""> Cycling](cycling.md)
+- [<img src="icon-kayaking.svg" width="32" alt=""> Kayaking](kayaking.md)
+- [<img src="icon-strength-training.svg" width="32" alt=""> Strength training](strength-training.md)
+- [<img src="icon-swimming.svg" width="32" alt=""> Swimming](swimming.md)
 
 Or see [all six databases at a glance](example-databases.md), empty one included.
 
