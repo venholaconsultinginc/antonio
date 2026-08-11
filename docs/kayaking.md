@@ -23,17 +23,58 @@ sqlite3 example-data/cordelia-sample-kayaking.sqlite
 
 *TODO: short tour of the tables a kayaking activity populates (same set as cycling) and the
 wind-as-a-pace-effect detail worth calling out (no wind field exists anywhere in Cordelia's
-schema).*
+schema) — plus a Cordelia screenshot, matching running.md's.*
 
 ## Example reports
 
-*Not written yet — Phase 3. Planned: a pace-trend line plot across the 8 paddles, and a GPS route
-map.*
+[`reports/kayaking_report.py`](../reports/kayaking_report.py) reads the example database above and
+produces a couple of basic reports — read it and copy from it as a starting point for your own.
+
+Summary metrics printed to stdout:
+
+```
+Paddles:             8
+Total distance:      45.7 km
+Total time:          12.2 h
+Average pace:        16.02 min/km
+Best (fastest) pace: 14.64 min/km
+Average stroke rate: 22 strokes/min
+Average heart rate:  119 bpm
+```
+
+A pace trend across all 8 paddles:
+
+![Pace trend across 8 paddles](kayaking-pace-trend.png)
+
+Average heart rate in five-minute buckets of elapsed time, across all 8 paddles:
+
+![Average heart rate by five-minute bucket into the paddle](kayaking-heart-rate-by-bucket.png)
+
+And a GPS route map for the first paddle:
+
+![GPS route map for one paddle](kayaking-route-map.png)
+
+Run it yourself:
+
+```bash
+python3 reports/kayaking_report.py
+```
 
 ## Using your own data
 
-*TODO: how to point whichever report script exists at your own Cordelia database instead of the
-example one.*
+The same script works against any Cordelia database, not just the bundled example — pass its path
+with `--db`:
+
+```bash
+python3 reports/kayaking_report.py --db path/to/your.sqlite
+```
+
+By default, plots are written to `reports/output/kayaking/`; pass `--out-dir` to write them
+somewhere else.
+
+## Still to do
+
+- The Cordelia-schema tour and screenshot noted above.
 
 ---
 
