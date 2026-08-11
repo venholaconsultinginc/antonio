@@ -2,9 +2,6 @@
 
 # Kayaking
 
-*Skeleton page — placeholder for the kayaking getting-started guide, not the finished thing. See
-"Still to do" below for what's missing.*
-
 New to Python, or don't have dependencies installed yet? See [setup](setup.md) first.
 
 ## Example database
@@ -21,9 +18,15 @@ sqlite3 example-data/cordelia-sample-kayaking.sqlite
 
 ## What a kayaking activity looks like in Cordelia
 
-*TODO: short tour of the tables a kayaking activity populates (same set as cycling) and the
-wind-as-a-pace-effect detail worth calling out (no wind field exists anywhere in Cordelia's
-schema) — plus a Cordelia screenshot, matching running.md's.*
+The `Record` table, viewed in Cordelia, for one paddle — note the `Speed` column reading `0`
+throughout, the same legacy-field quirk cycling hits; the report script sidesteps it entirely,
+deriving pace from `total_distance`/`total_timer_time` rather than a speed field. Also worth
+noting: there's no wind field anywhere in Cordelia's schema, despite wind being one of the biggest
+swings on paddling pace:
+
+![Cordelia's Tables view, showing the Record table for a kayaking activity](cordelia-screenshot-kayaking-record-table.png)
+
+*TODO: short tour of the rest of the tables a kayaking activity populates (same set as cycling).*
 
 ## Example reports
 
@@ -74,7 +77,7 @@ somewhere else.
 
 ## Still to do
 
-- The Cordelia-schema tour and screenshot noted above.
+- The rest of the Cordelia-schema tour noted above.
 
 ---
 
