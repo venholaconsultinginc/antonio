@@ -6,8 +6,8 @@ New to Python, or don't have dependencies installed yet? See [setup](setup.md) f
 
 ## Example database
 
-30 consecutive daily ~5&nbsp;km runs along a real public route, fabricated (no real person,
-device, or activity represented). Download `cordelia-sample-running.sqlite`, with its SHA-256
+25 daily ~5&nbsp;km runs along a real public route — one a day across August 1–29, 2026, with
+Sundays as rest days — fabricated (no real person, device, or activity represented). Download `cordelia-sample-running.sqlite`, with its SHA-256
 checksum and GPG signature, from [the downloads page](example-databases.md).
 
 ```bash
@@ -39,11 +39,11 @@ Best (fastest) pace: 5.20 min/km
 Average heart rate:  145 bpm
 ```
 
-A pace trend across all 30 runs:
+A pace trend across all 25 runs:
 
-![Pace trend across 30 runs](running-pace-trend.png)
+![Pace trend across 25 runs](running-pace-trend.png)
 
-Average heart rate in five-minute buckets of elapsed time, across all 30 runs:
+Average heart rate in five-minute buckets of elapsed time, across all 25 runs:
 
 ![Average heart rate by five-minute bucket into the run](running-heart-rate-by-bucket.png)
 
