@@ -6,7 +6,7 @@ own required just to get started.
 
 | | Sport | Contents | File |
 |---|---|---|---|
-| <img src="icon-running.svg" width="56" alt=""> | Running | 30 consecutive daily ~5&nbsp;km runs along a real public route<br>Aug 1–30, 2026 · Ottawa River Pathway, Ottawa ON<br>Avg 29.2 min · 5.8 min/km pace | [`cordelia-sample-running.sqlite`](../example-data/cordelia-sample-running.sqlite) |
+| <img src="icon-running.svg" width="56" alt=""> | Running | 25 daily ~5&nbsp;km runs along a real public route, Sundays rested<br>Aug 1–29, 2026 · Ottawa River Pathway, Ottawa ON<br>Avg 29.2 min · 5.8 min/km pace | [`cordelia-sample-running.sqlite`](../example-data/cordelia-sample-running.sqlite) |
 | <img src="icon-cycling.svg" width="56" alt=""> | Cycling | 4 rides along the real Tour de Victoria 80&nbsp;km road-cycling route<br>Sep 5–26, 2026 · Victoria, BC<br>Avg 204.5 min (~3h25m) · 22.6 km/h avg speed | [`cordelia-sample-cycling.sqlite`](../example-data/cordelia-sample-cycling.sqlite) |
 | <img src="icon-kayaking.svg" width="56" alt=""> | Kayaking | 8 out-and-back paddles in the Gulf Islands<br>Sep 4–27, 2026 · Mayne Island, BC<br>Avg 91.6 min (~1h32m) · 45.7&nbsp;km total (~5.7&nbsp;km/paddle) | [`cordelia-sample-kayaking.sqlite`](../example-data/cordelia-sample-kayaking.sqlite) |
 | <img src="icon-strength-training.svg" width="56" alt=""> | Strength training | 8 sessions of work sets and rest periods — no GPS, no distance or speed<br>Sep 1–24, 2026 · indoor (no GPS)<br>Avg 51.3 min · 51 work sets + 50 rest periods/session | [`cordelia-sample-strength-training.sqlite`](../example-data/cordelia-sample-strength-training.sqlite) |
