@@ -1,0 +1,51 @@
+name: Feature request
+description: Suggest something Cordelia, Kent, Antonio or the website should do
+labels: ["enhancement", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting this.
+
+        **Everything you write here is public the moment you submit it.**
+
+        No GitHub account? Email <help@venholaconsulting.ca> instead.
+
+  - type: dropdown
+    id: product
+    attributes:
+      label: Which application?
+      options:
+        - Cordelia
+        - Kent
+        - Antonio (the example report scripts)
+        - The website (venholaconsulting.ca)
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: >
+        What you're trying to do today, and where it gets awkward. The problem matters more than
+        the solution — knowing what you're up against often suggests a better answer than the one
+        either of us started with.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What should it do instead?
+      description: How you picture it working.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Anything you've tried or considered?
+      description: Workarounds you're using now, or other approaches you weighed and rejected.
+    validations:
+      required: false

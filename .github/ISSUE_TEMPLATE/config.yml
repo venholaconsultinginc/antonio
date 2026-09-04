@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Email support
+    url: mailto:help@venholaconsulting.ca
+    about: No GitHub account, or something you'd rather not post publicly? Write to us directly.
+  - name: Cordelia and Kent help
+    url: https://venholaconsulting.ca/apps/help/
+    about: Guides for both applications, in English, Español, Français, Deutsch, Italiano and Português (Brasil).
+  - name: Antonio getting started
+    url: https://github.com/venholaconsultinginc/antonio/blob/main/docs/README.md
+    about: Worked examples for each sport, using the published example databases.

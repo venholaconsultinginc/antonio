@@ -1,0 +1,78 @@
+name: Bug report
+description: Something in Cordelia, Kent, Antonio or the website isn't working right
+labels: ["bug", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this.
+
+        **Everything you write here is public the moment you submit it.** Please don't paste
+        anything you wouldn't want indexed — check console output and screenshots for file paths,
+        email addresses, or location data before you include them.
+
+        No GitHub account? Email <help@venholaconsulting.ca> instead.
+
+  - type: dropdown
+    id: product
+    attributes:
+      label: Which application?
+      options:
+        - Cordelia
+        - Kent
+        - Antonio (the example report scripts)
+        - The website (venholaconsulting.ca)
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: >
+        Cordelia shows its version in About Cordelia. Kent prints its version — see Getting Help
+        and Version Information in its help. For Antonio, the commit you're working from is enough.
+      placeholder: e.g. Cordelia 1.3.0, or Kent 1.3.1
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: e.g. Fedora 44, Ubuntu 24.04, Windows 11
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you did, and what the application did in response.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Console or terminal output
+      description: |
+        **Cordelia** — include a copy of the console output if you have it; there's a *Copy all*
+        button for exactly this.
+
+        **Kent** — include the exact command you ran, the full output, and the exit code (`echo $?`
+        straight afterward). Kent prints its messages, error messages included, on standard output,
+        so `kent info mydata.sqlite > out.txt 2>&1` captures everything; the standard-error
+        redirect catches the one exception, an unhandled-exception message, which is the only thing
+        Kent sends there.
+
+        If your report involves a specific database, `kent details`'s output describes it — schema
+        version, table counts, file size — without exposing any of the data in it.
+      render: text
