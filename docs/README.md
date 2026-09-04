@@ -29,8 +29,8 @@ For more on Cordelia itself — what it is, how it works, the database it produc
 
 ## What's still missing
 
-- The report/plotting scripts themselves (Phase 3 — running is done, see the
-  [running guide](running.md); cycling is too, see the [cycling guide](cycling.md);
-  kayaking/strength training/swimming still to come, see
-  each sport page above for what they'll show once they exist).
+- The swimming report script (Phase 3 — running, cycling, kayaking and strength training are
+  done; see the [running](running.md), [cycling](cycling.md), [kayaking](kayaking.md) and
+  [strength training](strength-training.md) guides. The [swimming page](swimming.md) says what
+  its script will show once it exists).
 - Troubleshooting section.
