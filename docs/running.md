@@ -31,12 +31,12 @@ produces a couple of basic reports — read it and copy from it as a starting po
 Summary metrics printed to stdout:
 
 ```
-Runs:                30
-Total distance:      150.8 km
-Total time:          14.6 h
-Average pace:        5.80 min/km
+Runs:                25
+Total distance:      125.7 km
+Total time:          12.2 h
+Average pace:        5.81 min/km
 Best (fastest) pace: 5.20 min/km
-Average heart rate:  145 bpm
+Average heart rate:  146 bpm
 ```
 
 A pace trend across all 25 runs:
