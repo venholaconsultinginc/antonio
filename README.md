@@ -20,7 +20,8 @@ itself, the app that produces the databases these scripts read, see
 Each script reads a Cordelia database for one sport, prints a few basic summary metrics (total
 distance, average pace, heart rate, and the like), and writes a couple of simple plots (trend
 lines, route maps) — meant to be read and adapted for your own analysis, not run as-is forever.
-Running, cycling, kayaking and strength training scripts are done; swimming is still coming.
+A script for each of the five sports is in place: running, cycling, kayaking, strength training
+and swimming.
 
 Don't have a Cordelia database of your own yet? Six ready-to-download example databases (one per
 sport plus an empty one, entirely fabricated) are available on [the downloads page](docs/example-databases.md).
@@ -35,5 +36,5 @@ Installing Python dependencies and checking your setup works: see the [setup gui
 |---|---|
 | `example-data/` | The six pre-built example databases, their checksums/signatures, and the public signing key — see [the downloads page](docs/example-databases.md). |
 | `docs/` | Customer-facing documentation — start at [Getting started](docs/README.md). |
-| `reports/` | The report/plotting scripts, one per sport (running, cycling, kayaking and strength training done; swimming still to come). |
+| `reports/` | The report/plotting scripts, one per sport — running, cycling, kayaking, strength training and swimming. |
 | `requirements.txt` | Python dependencies for the report scripts — see the [setup guide](docs/setup.md). |

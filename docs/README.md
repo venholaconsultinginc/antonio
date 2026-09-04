@@ -1,9 +1,5 @@
 # Getting started with antonio
 
-*Skeleton — this is the planned entry point for antonio's customer-facing documentation, not the
-finished thing. Fill in as Phase 3 report scripts land; see each sport page for what's still a
-placeholder.*
-
 `antonio` shows how to query a Cordelia SQLite database and produce basic reports, in Python. New
 to Python or don't have dependencies installed yet? Start with [setup](setup.md). Don't have a
 database to work with yet? See [how to get one](obtaining-data.md). Otherwise, pick the sport
@@ -29,8 +25,6 @@ For more on Cordelia itself — what it is, how it works, the database it produc
 
 ## What's still missing
 
-- The swimming report script (Phase 3 — running, cycling, kayaking and strength training are
-  done; see the [running](running.md), [cycling](cycling.md), [kayaking](kayaking.md) and
-  [strength training](strength-training.md) guides. The [swimming page](swimming.md) says what
-  its script will show once it exists).
 - Troubleshooting section.
+- A tour of `SetX`'s columns on the [strength training page](strength-training.md), the one
+  remaining TODO on a sport page.
