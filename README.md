@@ -38,3 +38,4 @@ Installing Python dependencies and checking your setup works: see the [setup gui
 | `docs/` | Customer-facing documentation — start at [Getting started](docs/README.md). |
 | `reports/` | The report/plotting scripts, one per sport — running, cycling, kayaking, strength training and swimming. |
 | `requirements.txt` | Python dependencies for the report scripts — see the [setup guide](docs/setup.md). |
+| `CONTRIBUTING.md` | How to report a bug, ask for a feature, or open a pull request. |
