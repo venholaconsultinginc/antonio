@@ -50,24 +50,27 @@ def load_sets(conn: sqlite3.Connection, locale: str = "en") -> pd.DataFrame:
     """Every set, with its exercise name resolved to readable text.
 
     A SetX row identifies its exercise with two Garmin codes: a category
-    (`raw_category_garmin_key`, e.g. "7") and a more specific subtype
-    (`raw_category_subtype_garmin_key`, e.g. "7 2"). Both are keys into
+    (`raw_category_garmin_key`, e.g. "23") and a more specific subtype
+    (`raw_category_subtype_garmin_key`, e.g. "23 18"). Both are keys into
     better_labels_definitions under the `setx_category` domain, and
     better_labels_lookup turns a definition into text for one locale.
 
-    Prefer the subtype, which names the actual movement ("Alternating Incline
-    Dumbbell Biceps Curl"); fall back to the category ("Curl") when a watch
-    recorded only that; fall back again to "Unspecified" when it recorded
-    neither, which is common for sets logged without an exercise selected.
+    Prefer the subtype, which names the actual movement ("Seated Cable Row");
+    fall back to the category ("Row") when a watch recorded only that — the
+    example database's Curl, Shrug and Push Up sets are exactly that case; fall
+    back again to "Unspecified" when it recorded neither, which happens for sets
+    logged without an exercise selected.
     """
     return pd.read_sql_query(
         """
         SELECT s.file_number,
                s.Timestamp,
+               s.message_index,
                s.Duration          AS duration_s,
                s.Repetitions       AS reps,
                s.Weight            AS weight_kg,
                COALESCE(subtype_label.value, category_label.value, 'Unspecified') AS exercise,
+               s.set_type                                                         AS set_type_id,
                COALESCE(set_type_label.value, 'Unknown')                          AS set_type
         FROM SetX s
         LEFT JOIN better_labels_definitions category_def
@@ -96,18 +99,33 @@ def load_sets(conn: sqlite3.Connection, locale: str = "en") -> pd.DataFrame:
     )
 
 
+# FIT's own set_type enum: 0 is a rest period, 1 is a work set.
+SET_TYPE_ACTIVE = 1
+
+
 def working_sets(sets: pd.DataFrame) -> pd.DataFrame:
-    """Just the sets you lifted in — the rest periods between them are also SetX rows."""
-    return sets[sets["set_type"] == "Active"]
+    """Just the sets you lifted in — the rest periods between them are also SetX rows.
+
+    Filters on the raw FIT enum, not on `set_type`'s display text. The text is
+    translated like every other better_labels value, so matching it against
+    "Active" silently discarded every set under --locale fr ("Actif") or de
+    ("Aktiv"), leaving a report of zero working sets.
+    """
+    return sets[sets["set_type_id"] == SET_TYPE_ACTIVE]
 
 
 def named_sets(sets: pd.DataFrame) -> pd.DataFrame:
     """Sets whose exercise the watch actually recorded.
 
-    A large share of real sets carry no exercise code — the watch counted reps
-    but nothing said what movement they were. Those sets are real work and stay
-    in the totals, but they can't be charted per exercise, so the per-exercise
-    plots use this subset instead.
+    A set can carry no exercise code at all — the watch counted reps, but
+    nothing said what movement they were. Those sets are real work and stay in
+    the totals, but they can't be charted per exercise, so the per-exercise
+    plots and the breakdown table use this subset instead.
+
+    The bundled example database has none of them, so this filter passes
+    everything through there. Your own data very likely does have some: it
+    happens whenever a set is logged without an exercise selected. The
+    "Sets with no exercise recorded" line in the summary tells you how many.
     """
     return sets[sets["exercise"] != "Unspecified"]
 
@@ -148,6 +166,70 @@ def print_summary(sessions: pd.DataFrame, sets: pd.DataFrame, all_sets: pd.DataF
             f"Sets with no exercise recorded: {unnamed} of {len(sets)} ({share:.0f}%)"
             " — counted in the totals above, left out of the per-exercise plots"
         )
+
+
+def exercise_breakdown(sets: pd.DataFrame, n_workouts: int) -> pd.DataFrame:
+    """One row per exercise: how many sets, at what reps, at what weight.
+
+    Ordered by first appearance, so the table reads in the order the workout is
+    actually performed. That is deliberately a different question from the
+    top-exercises plot's "what moved the most weight" — this one answers "what
+    is the routine".
+
+    Order comes from `message_index`, the set's own position in the file, NOT
+    from `Timestamp`: a SetX row's Timestamp is the session's timestamp repeated
+    on every row of that session, so it is identical for all 101 rows and sorts
+    nothing. (`start_time` is the per-set time, if you need a real clock value.)
+
+    Sets are reported per workout rather than as a raw total, since that is the
+    figure you'd compare against a training plan. It is a mean: if you did three
+    sets of an exercise in one workout and four in another, it reads 3.5.
+    """
+    named = named_sets(sets)
+    grouped = named.groupby("exercise")
+    table = pd.DataFrame(
+        {
+            "first_performed": grouped["message_index"].min(),
+            "sets": grouped.size(),
+            "reps_low": grouped["reps"].min(),
+            "reps_high": grouped["reps"].max(),
+            "weight_low": grouped["weight_kg"].min(),
+            "weight_high": grouped["weight_kg"].max(),
+        }
+    ).sort_values("first_performed")
+    table["sets_per_workout"] = table["sets"] / n_workouts
+    return table
+
+
+def _range_text(low: float, high: float, suffix: str = "") -> str:
+    """"10" for a single value, "10-12" for a range — no false precision either way."""
+    if low == high:
+        return f"{low:.0f}{suffix}"
+    return f"{low:.0f}-{high:.0f}{suffix}"
+
+
+def print_exercise_breakdown(sets: pd.DataFrame, sessions: pd.DataFrame) -> None:
+    table = exercise_breakdown(sets, len(sessions))
+    if table.empty:
+        return
+
+    name_width = max(len("Exercise"), *(len(name) for name in table.index))
+    print()
+    print(f"Per exercise, in the order performed, across {len(sessions)} workouts:")
+    print()
+    print(f"  {'Exercise':<{name_width}}  {'Sets/workout':>12}  {'Reps':>7}  Weight")
+    for exercise, row in table.iterrows():
+        per_workout = row["sets_per_workout"]
+        sets_text = f"{per_workout:.0f}" if float(per_workout).is_integer() else f"{per_workout:.1f}"
+        reps_text = _range_text(row["reps_low"], row["reps_high"])
+        # Weight 0 covers both genuine bodyweight work and sets a device records
+        # without a weight at all; the FIT file doesn't distinguish them, so
+        # neither does this.
+        if row["weight_high"] == 0:
+            weight_text = "none recorded"
+        else:
+            weight_text = _range_text(row["weight_low"], row["weight_high"], " kg")
+        print(f"  {exercise:<{name_width}}  {sets_text:>12}  {reps_text:>7}  {weight_text}")
 
 
 def plot_volume_per_session(per_session: pd.DataFrame, out_path: Path) -> None:
@@ -235,6 +317,7 @@ def main() -> None:
         sets = add_volume(working_sets(all_sets))
 
         print_summary(sessions, sets, all_sets)
+        print_exercise_breakdown(sets, sessions)
 
         plot_volume_per_session(volume_per_session(sets, sessions), args.out_dir / "volume_per_session.png")
         plot_top_exercises(sets, args.out_dir / "top_exercises_by_volume.png")
