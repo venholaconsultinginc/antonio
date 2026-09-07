@@ -47,42 +47,44 @@ Distinct exercises:  20
 Biggest exercise:    Lat Pulldown (15,750 kg)
 ```
 
-And the routine itself — every session replays the same one, so these are exact, not averages:
+And the routine itself. Every session replays the same one, so these are exact counts rather than
+averages — and the order is the order performed, warm-up crunches through to the closing stretches:
 
-```
-Per exercise, in the order performed, across 8 workouts:
+| Exercise | Sets | Reps | Weight |
+|:---|---:|---:|---:|
+| Weighted Crunch | 3 | 8–11 | 15–20 kg |
+| Curl † | 3 | 10–11 | 40–45 kg |
+| Shrug † | 3 | 8–11 | 15–20 kg |
+| Overhead Barbell Press | 3 | 10 | 15–20 kg |
+| Chest Supported Dumbbell Row | 3 | 9–11 | 40–45 kg |
+| Weighted Leg Extensions | 3 | 10 | 20–25 kg |
+| Seated Cable Row | 3 | 10–11 | 50–55 kg |
+| Lat Pulldown | 3 | 11–12 | 55–60 kg |
+| Elbow To Knee Crunch | 3 | 10 | None recorded |
+| Weighted Balancing Squat | 3 | 9 | 20–25 kg |
+| Stretch Lying It Band | 3 | 9–11 | 10–15 kg |
+| Glute Bridge | 3 | 6–11 | 25–30 kg |
+| Chin Up | 3 | 9–10 | None recorded |
+| Push Up † | 4 | 6–10 | None recorded |
+| Weighted Standing Hip Abduction | 3 | 6–9 | 40–45 kg |
+| Stretch Shoulder | 1 | 1 | None recorded |
+| Hamstring Stretch | 1 | 1 | None recorded |
+| Stretch Side | 1 | 2 | None recorded |
+| Groiners | 1 | 1 | None recorded |
+| Stretch Forearms | 1 | 2 | None recorded |
+| **Total** | **51** | | |
 
-  Exercise                         Sets/workout     Reps  Weight
-  Weighted Crunch                             3     8-11  15-20 kg
-  Curl                                        3    10-11  40-45 kg
-  Shrug                                       3     8-11  15-20 kg
-  Overhead Barbell Press                      3       10  15-20 kg
-  Chest Supported Dumbbell Row                3     9-11  40-45 kg
-  Weighted Leg Extensions                     3       10  20-25 kg
-  Seated Cable Row                            3    10-11  50-55 kg
-  Lat Pulldown                                3    11-12  55-60 kg
-  Elbow To Knee Crunch                        3       10  none recorded
-  Weighted Balancing Squat                    3        9  20-25 kg
-  Stretch Lying It Band                       3     9-11  10-15 kg
-  Glute Bridge                                3     6-11  25-30 kg
-  Chin Up                                     3     9-10  none recorded
-  Push Up                                     4     6-10  none recorded
-  Weighted Standing Hip Abduction             3      6-9  40-45 kg
-  Stretch Shoulder                            1        1  none recorded
-  Hamstring Stretch                           1        1  none recorded
-  Stretch Side                                1        2  none recorded
-  Groiners                                    1        1  none recorded
-  Stretch Forearms                            1        2  none recorded
-```
+† Carries a category code but no more specific subtype, so it reads as the broad movement rather
+than a named variant. That's the `COALESCE` fallback described below, visible in the data.
 
-Three of those carry a category code but no more specific subtype, so they show as the broad
-movement rather than a named variant: **Curl**, **Shrug** and **Push Up**. That's the `COALESCE`
-fallback described below, visible in the output.
+**"None recorded"** is weight 0, which covers two things the FIT file can't tell apart: genuine
+bodyweight work (the chin-ups, push-ups and crunches) and the closing stretches, which Garmin
+Connect displays as "--" rather than "Bodyweight". Where a weight *is* recorded it reads as a
+range, because the last two sessions add 5 kg to every already-weighted set — a progressive-overload
+step you can see in the progression plot below.
 
-"None recorded" is weight 0, which covers two things the FIT file can't tell apart: genuine
-bodyweight work (chin-ups, push-ups, the crunches) and the closing stretches, which Garmin Connect
-displays as "--" rather than "Bodyweight". Weight ranges span a real progressive-overload step —
-the last two sessions add 5 kg to every already-weighted set.
+The script prints this same table to stdout, so it stays in step with whatever database you point
+it at rather than being maintained by hand here.
 
 Volume — reps × weight — totalled for each workout:
 
@@ -117,9 +119,9 @@ performed, and a set logged without an exercise selected has nothing to name it.
 real work and stay in the totals — the summary prints a "Sets with no exercise recorded" line
 whenever there are any — they just can't be charted or listed per exercise.
 
-The middle branch of that `COALESCE` is visible in the table above: **Curl**, **Shrug** and
-**Push Up** carry a category code and no subtype, so they read as the broad movement. Everything
-else in the example resolves to a specific named variant.
+The middle branch of that `COALESCE` is the one marked † in the table above: **Curl**, **Shrug**
+and **Push Up** carry a category code and no subtype, so they read as the broad movement.
+Everything else in the example resolves to a specific named variant.
 
 Those labels exist in six locales, though that mostly buys you the *category* names — Garmin's
 per-exercise subtype names are largely untranslated in the source data. Of the twenty exercises
