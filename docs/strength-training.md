@@ -43,37 +43,48 @@ Biggest exercise:    Lat Pulldown (15,750 kg)
 ```
 
 And the routine itself. Every session replays the same one, so these are exact counts rather than
-averages — and the order is the order performed, warm-up crunches through to the closing stretches:
+averages, and the order is the order performed. The last five are single-set stretching and mobility
+work, so they get a table of their own.
 
-| | Exercise | Sets | Reps | Weight | Comments |
+The commentary is Antonio's. He is a sea captain by trade, so his frame of reference is what it is.
+
+**The main circuit** — 46 of the 51 work sets:
+
+| | Exercise | Sets | Reps | Weight | Antonio says |
 |:---:|:---|---:|---:|---:|:---|
-| <img src="exercises/weighted-crunch.svg" width="84" alt=""> | Weighted Crunch | 3 | 8–11 | 15–20 kg | |
-| <img src="exercises/curl.svg" width="59" alt=""> | Curl † | 3 | 10–11 | 40–45 kg | |
-| <img src="exercises/shrug.svg" width="60" alt=""> | Shrug † | 3 | 8–11 | 15–20 kg | |
-| <img src="exercises/overhead-barbell-press.svg" width="58" alt=""> | Overhead Barbell Press | 3 | 10 | 15–20 kg | |
-| <img src="exercises/chest-supported-dumbbell-row.svg" width="84" alt=""> | Chest Supported Dumbbell Row | 3 | 9–11 | 40–45 kg | |
-| <img src="exercises/weighted-leg-extensions.svg" width="77" alt=""> | Weighted Leg Extensions | 3 | 10 | 20–25 kg | |
-| <img src="exercises/seated-cable-row.svg" width="84" alt=""> | Seated Cable Row | 3 | 10–11 | 50–55 kg | |
-| <img src="exercises/lat-pulldown.svg" width="54" alt=""> | Lat Pulldown | 3 | 11–12 | 55–60 kg | |
-| <img src="exercises/elbow-to-knee-crunch.svg" width="84" alt=""> | Elbow To Knee Crunch | 3 | 10 | None recorded | |
-| <img src="exercises/weighted-balancing-squat.svg" width="73" alt=""> | Weighted Balancing Squat | 3 | 9 | 20–25 kg | |
-| <img src="exercises/stretch-lying-it-band.svg" width="84" alt=""> | Stretch Lying It Band | 3 | 9–11 | 10–15 kg | |
-| <img src="exercises/glute-bridge.svg" width="84" alt=""> | Glute Bridge | 3 | 6–11 | 25–30 kg | |
-| <img src="exercises/chin-up.svg" width="31" alt=""> | Chin Up | 3 | 9–10 | None recorded | |
-| <img src="exercises/push-up.svg" width="84" alt=""> | Push Up † | 4 | 6–10 | None recorded | |
-| <img src="exercises/weighted-standing-hip-abduction.svg" width="60" alt=""> | Weighted Standing Hip Abduction | 3 | 6–9 | 40–45 kg | |
-| <img src="exercises/stretch-shoulder.svg" width="60" alt=""> | Stretch Shoulder | 1 | 1 | None recorded | |
-| <img src="exercises/hamstring-stretch.svg" width="84" alt=""> | Hamstring Stretch | 1 | 1 | None recorded | |
-| <img src="exercises/stretch-side.svg" width="68" alt=""> | Stretch Side | 1 | 2 | None recorded | |
-| <img src="exercises/groiners.svg" width="84" alt=""> | Groiners | 1 | 1 | None recorded | |
-| <img src="exercises/stretch-forearms.svg" width="61" alt=""> | Stretch Forearms | 1 | 2 | None recorded | |
-| | **Total** | **51** | | | |
+| <img src="exercises/weighted-crunch.svg" width="84" alt=""> | Weighted Crunch | 3 | 8–11 | 15–20 kg | For the abs. Cordelia is in an entirely different play, but a man can hope. |
+| <img src="exercises/curl.svg" width="59" alt=""> | Curl † | 3 | 10–11 | 40–45 kg |  |
+| <img src="exercises/shrug.svg" width="60" alt=""> | Shrug † | 3 | 8–11 | 15–20 kg | Also my answer when anyone asks where my purse went. |
+| <img src="exercises/overhead-barbell-press.svg" width="58" alt=""> | Overhead Barbell Press | 3 | 10 | 15–20 kg |  |
+| <img src="exercises/chest-supported-dumbbell-row.svg" width="84" alt=""> | Chest Supported Dumbbell Row | 3 | 9–11 | 40–45 kg | I captain a ship and paddle a kayak. Rowing, at least, I have references for. |
+| <img src="exercises/weighted-leg-extensions.svg" width="77" alt=""> | Weighted Leg Extensions | 3 | 10 | 20–25 kg | Eighty kilometres of the Victoria route says these are earning their keep. |
+| <img src="exercises/seated-cable-row.svg" width="84" alt=""> | Seated Cable Row | 3 | 10–11 | 50–55 kg | Rowing that goes nowhere. The sea never charged me a membership. |
+| <img src="exercises/lat-pulldown.svg" width="54" alt=""> | Lat Pulldown | 3 | 11–12 | 55–60 kg | Hauling rope by another name. The rigging taught me this one for free. |
+| <img src="exercises/elbow-to-knee-crunch.svg" width="84" alt=""> | Elbow To Knee Crunch | 3 | 10 | None recorded |  |
+| <img src="exercises/weighted-balancing-squat.svg" width="73" alt=""> | Weighted Balancing Squat | 3 | 9 | 20–25 kg | Balancing on a floor that refuses to pitch. Frankly, it feels like cheating. |
+| <img src="exercises/stretch-lying-it-band.svg" width="84" alt=""> | Stretch Lying It Band | 3 | 9–11 | 10–15 kg |  |
+| <img src="exercises/glute-bridge.svg" width="84" alt=""> | Glute Bridge | 3 | 6–11 | 25–30 kg |  |
+| <img src="exercises/chin-up.svg" width="31" alt=""> | Chin Up | 3 | 9–10 | None recorded | Hardest of the lot. I once hauled a whole man out of the sea; now I manage nine. |
+| <img src="exercises/push-up.svg" width="84" alt=""> | Push Up † | 4 | 6–10 | None recorded | I should push myself harder here. Four sets is barely a squall. |
+| <img src="exercises/weighted-standing-hip-abduction.svg" width="60" alt=""> | Weighted Standing Hip Abduction | 3 | 6–9 | 40–45 kg |  |
+| | **Total** | **46** | | | |
+
+**Cool-down** — the remaining 5, one set each:
+
+| | Exercise | Sets | Reps | Weight | Antonio says |
+|:---:|:---|---:|---:|---:|:---|
+| <img src="exercises/stretch-shoulder.svg" width="60" alt=""> | Stretch Shoulder | 1 | 1 | None recorded | Twenty-six mornings of freestyle in a 25-metre pool. The shoulders remember. |
+| <img src="exercises/hamstring-stretch.svg" width="84" alt=""> | Hamstring Stretch | 1 | 1 | None recorded | Twenty-five runs in August, not one stretch among them. This is the invoice. |
+| <img src="exercises/stretch-side.svg" width="68" alt=""> | Stretch Side | 1 | 2 | None recorded |  |
+| <img src="exercises/groiners.svg" width="84" alt=""> | Groiners | 1 | 1 | None recorded | My right knee lodges a formal complaint every single time. |
+| <img src="exercises/stretch-forearms.svg" width="61" alt=""> | Stretch Forearms | 1 | 2 | None recorded | Rope, oar, purse. They have earned it. |
+| | **Total** | **5** | | | |
 
 † Carries a category code but no more specific subtype, so it reads as the broad movement rather
 than a named variant. That's the `COALESCE` fallback described below, visible in the data.
 
 **"None recorded"** is weight 0, which covers two things the FIT file can't tell apart: genuine
-bodyweight work (the chin-ups, push-ups and crunches) and the closing stretches, which Garmin
+bodyweight work (the chin-ups, push-ups and crunches) and the cool-down, which Garmin
 Connect displays as "--" rather than "Bodyweight". Where a weight *is* recorded it reads as a
 range, because the last two sessions add 5 kg to every already-weighted set — a progressive-overload
 step you can see in the progression plot below.
@@ -114,7 +125,7 @@ performed, and a set logged without an exercise selected has nothing to name it.
 real work and stay in the totals — the summary prints a "Sets with no exercise recorded" line
 whenever there are any — they just can't be charted or listed per exercise.
 
-The middle branch of that `COALESCE` is the one marked † in the table above: **Curl**, **Shrug**
+The middle branch of that `COALESCE` is the one marked † in the circuit table above: **Curl**, **Shrug**
 and **Push Up** carry a category code and no subtype, so they read as the broad movement.
 Everything else in the example resolves to a specific named variant.
 
