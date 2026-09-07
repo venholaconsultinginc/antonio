@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Glute Bridge - black and white stick-figure line drawing, 512x512, transparent background.
+  Copyright (c) 2026 Randall.
+  This work is licensed under a Creative Commons Attribution 4.0 International License.
+  http://creativecommons.org/licenses/by/4.0/
+-->
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:cc="http://creativecommons.org/ns#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     width="512" height="512" viewBox="0 0 512 512"
+     role="img" aria-labelledby="title desc">
+  <title id="title">Glute Bridge</title>
+  <desc id="desc">Stick figure lying on its back with knees bent and hips driven up into a straight line from shoulders to knees.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Glute Bridge</dc:title>
+        <dc:description>Stick figure lying on its back with knees bent and hips driven up into a straight line from shoulders to knees.</dc:description>
+        <dc:creator><cc:Agent><dc:title>Randall</dc:title></cc:Agent></dc:creator>
+        <dc:date>2026-09-07</dc:date>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/by/4.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g fill="none" stroke="#000000" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <polyline fill="none" points="44.0,452.0 468.0,452.0" stroke-width="6"/>
+    <circle fill="none" cx="130.0" cy="420.0" r="25.0"/>
+    <polyline fill="none" points="162.0,428.0 292.0,352.0"/>
+    <polyline fill="none" points="186.0,412.0 216.0,446.0 262.0,452.0"/>
+    <polyline fill="none" points="292.0,352.0 362.0,340.0 376.0,438.0"/>
+    <polyline fill="none" points="376.0,438.0 404.0,448.0"/>
+    <polyline fill="none" points="288.0,358.0 330.0,362.0 336.0,446.0"/>
+  </g>
+</svg>

@@ -26,8 +26,6 @@ swings on paddling pace:
 
 ![Cordelia's Tables view, showing the Record table for a kayaking activity](cordelia-screenshot-kayaking-record-table.png)
 
-*TODO: short tour of the rest of the tables a kayaking activity populates (same set as cycling).*
-
 ## Example reports
 
 [`reports/kayaking_report.py`](../reports/kayaking_report.py) reads the example database above and
@@ -74,10 +72,6 @@ python3 reports/kayaking_report.py --db path/to/your.sqlite
 
 By default, plots are written to `reports/output/kayaking/`; pass `--out-dir` to write them
 somewhere else.
-
-## Still to do
-
-- The rest of the Cordelia-schema tour noted above.
 
 ---
 
