@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Overhead Barbell Press - black and white stick-figure line drawing, 512x512, transparent background.
+  Copyright (c) 2026 Randall.
+  This work is licensed under a Creative Commons Attribution 4.0 International License.
+  http://creativecommons.org/licenses/by/4.0/
+-->
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:cc="http://creativecommons.org/ns#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     width="512" height="512" viewBox="0 0 512 512"
+     role="img" aria-labelledby="title desc">
+  <title id="title">Overhead Barbell Press</title>
+  <desc id="desc">Stick figure standing front-on, pressing a barbell to arms' length overhead.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Overhead Barbell Press</dc:title>
+        <dc:description>Stick figure standing front-on, pressing a barbell to arms' length overhead.</dc:description>
+        <dc:creator><cc:Agent><dc:title>Randall</dc:title></cc:Agent></dc:creator>
+        <dc:date>2026-09-07</dc:date>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/by/4.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g fill="none" stroke="#000000" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <polyline fill="none" points="44.0,470.0 468.0,470.0" stroke-width="6"/>
+    <g transform="translate(256.0,84.0) rotate(0.0)" stroke-width="7"><line x1="-132.0" y1="0" x2="132.0" y2="0"/><rect fill="none" x="-110.0" y="-26" width="12" height="52" rx="4"/><rect fill="none" x="-130.0" y="-20" width="10" height="40" rx="4"/><rect fill="none" x="98.0" y="-26" width="12" height="52" rx="4"/><rect fill="none" x="120.0" y="-20" width="10" height="40" rx="4"/></g>
+    <circle fill="none" cx="256.0" cy="190.0" r="25.0"/>
+    <polyline fill="none" points="256.0,215.0 256.0,336.0"/>
+    <polyline fill="none" points="256.0,222.0 182.0,174.0 200.0,92.0"/>
+    <polyline fill="none" points="256.0,222.0 330.0,174.0 312.0,92.0"/>
+    <polyline fill="none" points="256.0,336.0 226.0,402.0 222.0,464.0"/>
+    <polyline fill="none" points="222.0,464.0 192.0,470.0"/>
+    <polyline fill="none" points="256.0,336.0 286.0,402.0 290.0,464.0"/>
+    <polyline fill="none" points="290.0,464.0 320.0,470.0"/>
+  </g>
+</svg>

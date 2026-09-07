@@ -22,9 +22,3 @@ fabricated — no real person, device, or activity is represented in any of them
 For more on Cordelia itself — what it is, how it works, the database it produces — see
 [venholaconsulting.ca/apps/help/](https://venholaconsulting.ca/apps/help/). Curious where the name
 "antonio" comes from? Read [the story behind it](namesake.md).
-
-## What's still missing
-
-- Troubleshooting section.
-- A tour of `SetX`'s columns on the [strength training page](strength-training.md), the one
-  remaining TODO on a sport page.

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Weighted Leg Extensions - black and white stick-figure line drawing, 512x512, transparent background.
+  Copyright (c) 2026 Randall.
+  This work is licensed under a Creative Commons Attribution 4.0 International License.
+  http://creativecommons.org/licenses/by/4.0/
+-->
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:cc="http://creativecommons.org/ns#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     width="512" height="512" viewBox="0 0 512 512"
+     role="img" aria-labelledby="title desc">
+  <title id="title">Weighted Leg Extensions</title>
+  <desc id="desc">Stick figure seated on a leg extension machine, knees locked out driving the roller pad up against the weight stack.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Weighted Leg Extensions</dc:title>
+        <dc:description>Stick figure seated on a leg extension machine, knees locked out driving the roller pad up against the weight stack.</dc:description>
+        <dc:creator><cc:Agent><dc:title>Randall</dc:title></cc:Agent></dc:creator>
+        <dc:date>2026-09-07</dc:date>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/by/4.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g fill="none" stroke="#000000" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <polyline fill="none" points="44.0,470.0 468.0,470.0" stroke-width="6"/>
+    <rect fill="none" x="96.0" y="300.0" width="48.0" height="122.0" rx="5.0" stroke-width="7"/>
+    <polyline fill="none" points="96.0,340.0 144.0,340.0" stroke-width="7"/>
+    <polyline fill="none" points="96.0,381.0 144.0,381.0" stroke-width="7"/>
+    <line x1="172.0" y1="308.0" x2="278.0" y2="308.0" stroke-width="13"/>
+    <line x1="162.0" y1="304.0" x2="138.0" y2="226.0" stroke-width="13"/>
+    <polyline fill="none" points="194.0,318.0 194.0,470.0" stroke-width="7"/>
+    <polyline fill="none" points="262.0,318.0 262.0,470.0" stroke-width="7"/>
+    <polyline fill="none" points="396.0,470.0 396.0,306.0" stroke-width="7"/>
+    <circle fill="none" cx="192.0" cy="190.0" r="24.0"/>
+    <polyline fill="none" points="212.0,296.0 196.0,224.0"/>
+    <polyline fill="none" points="206.0,244.0 248.0,282.0 228.0,308.0"/>
+    <polyline fill="none" points="210.0,296.0 306.0,300.0 386.0,296.0"/>
+    <polyline fill="none" points="386.0,296.0 390.0,268.0"/>
+    <circle fill="none" cx="396.0" cy="300.0" r="22.0" stroke-width="7"/>
+  </g>
+</svg>

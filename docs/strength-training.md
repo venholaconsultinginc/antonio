@@ -2,9 +2,6 @@
 
 # Strength training
 
-*The report script and its examples below are real. The tour of `SetX`'s columns is still to be
-written — see the TODO in "What a strength-training activity looks like in Cordelia".*
-
 New to Python, or don't have dependencies installed yet? See [setup](setup.md) first.
 
 ## Example database
@@ -23,8 +20,6 @@ Genuinely different shape from the other three sports: no GPS, no `Distance`, no
 a `SetX` table (one row per work set or rest period, with `Repetitions`, `Weight`, `Duration`, and
 FIT's own exercise-category codes) alongside `Session`/`Lap` summaries and a heart-rate-only
 `Record` table.
-
-*TODO: short tour of `SetX`'s columns and how they map to what you'd see in Garmin Connect.*
 
 ## Example reports
 
@@ -50,29 +45,29 @@ Biggest exercise:    Lat Pulldown (15,750 kg)
 And the routine itself. Every session replays the same one, so these are exact counts rather than
 averages — and the order is the order performed, warm-up crunches through to the closing stretches:
 
-| Exercise | Sets | Reps | Weight |
-|:---|---:|---:|---:|
-| Weighted Crunch | 3 | 8–11 | 15–20 kg |
-| Curl † | 3 | 10–11 | 40–45 kg |
-| Shrug † | 3 | 8–11 | 15–20 kg |
-| Overhead Barbell Press | 3 | 10 | 15–20 kg |
-| Chest Supported Dumbbell Row | 3 | 9–11 | 40–45 kg |
-| Weighted Leg Extensions | 3 | 10 | 20–25 kg |
-| Seated Cable Row | 3 | 10–11 | 50–55 kg |
-| Lat Pulldown | 3 | 11–12 | 55–60 kg |
-| Elbow To Knee Crunch | 3 | 10 | None recorded |
-| Weighted Balancing Squat | 3 | 9 | 20–25 kg |
-| Stretch Lying It Band | 3 | 9–11 | 10–15 kg |
-| Glute Bridge | 3 | 6–11 | 25–30 kg |
-| Chin Up | 3 | 9–10 | None recorded |
-| Push Up † | 4 | 6–10 | None recorded |
-| Weighted Standing Hip Abduction | 3 | 6–9 | 40–45 kg |
-| Stretch Shoulder | 1 | 1 | None recorded |
-| Hamstring Stretch | 1 | 1 | None recorded |
-| Stretch Side | 1 | 2 | None recorded |
-| Groiners | 1 | 1 | None recorded |
-| Stretch Forearms | 1 | 2 | None recorded |
-| **Total** | **51** | | |
+| | Exercise | Sets | Reps | Weight | Comments |
+|:---:|:---|---:|---:|---:|:---|
+| <img src="exercises/weighted-crunch.svg" width="44" alt=""> | Weighted Crunch | 3 | 8–11 | 15–20 kg | |
+| <img src="exercises/curl.svg" width="44" alt=""> | Curl † | 3 | 10–11 | 40–45 kg | |
+| <img src="exercises/shrug.svg" width="44" alt=""> | Shrug † | 3 | 8–11 | 15–20 kg | |
+| <img src="exercises/overhead-barbell-press.svg" width="44" alt=""> | Overhead Barbell Press | 3 | 10 | 15–20 kg | |
+| <img src="exercises/chest-supported-dumbbell-row.svg" width="44" alt=""> | Chest Supported Dumbbell Row | 3 | 9–11 | 40–45 kg | |
+| <img src="exercises/weighted-leg-extensions.svg" width="44" alt=""> | Weighted Leg Extensions | 3 | 10 | 20–25 kg | |
+| <img src="exercises/seated-cable-row.svg" width="44" alt=""> | Seated Cable Row | 3 | 10–11 | 50–55 kg | |
+| <img src="exercises/lat-pulldown.svg" width="44" alt=""> | Lat Pulldown | 3 | 11–12 | 55–60 kg | |
+| <img src="exercises/elbow-to-knee-crunch.svg" width="44" alt=""> | Elbow To Knee Crunch | 3 | 10 | None recorded | |
+| <img src="exercises/weighted-balancing-squat.svg" width="44" alt=""> | Weighted Balancing Squat | 3 | 9 | 20–25 kg | |
+| <img src="exercises/stretch-lying-it-band.svg" width="44" alt=""> | Stretch Lying It Band | 3 | 9–11 | 10–15 kg | |
+| <img src="exercises/glute-bridge.svg" width="44" alt=""> | Glute Bridge | 3 | 6–11 | 25–30 kg | |
+| <img src="exercises/chin-up.svg" width="44" alt=""> | Chin Up | 3 | 9–10 | None recorded | |
+| <img src="exercises/push-up.svg" width="44" alt=""> | Push Up † | 4 | 6–10 | None recorded | |
+| <img src="exercises/weighted-standing-hip-abduction.svg" width="44" alt=""> | Weighted Standing Hip Abduction | 3 | 6–9 | 40–45 kg | |
+| <img src="exercises/stretch-shoulder.svg" width="44" alt=""> | Stretch Shoulder | 1 | 1 | None recorded | |
+| <img src="exercises/hamstring-stretch.svg" width="44" alt=""> | Hamstring Stretch | 1 | 1 | None recorded | |
+| <img src="exercises/stretch-side.svg" width="44" alt=""> | Stretch Side | 1 | 2 | None recorded | |
+| <img src="exercises/groiners.svg" width="44" alt=""> | Groiners | 1 | 1 | None recorded | |
+| <img src="exercises/stretch-forearms.svg" width="44" alt=""> | Stretch Forearms | 1 | 2 | None recorded | |
+| | **Total** | **51** | | | |
 
 † Carries a category code but no more specific subtype, so it reads as the broad movement rather
 than a named variant. That's the `COALESCE` fallback described below, visible in the data.

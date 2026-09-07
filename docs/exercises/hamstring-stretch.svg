@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Hamstring Stretch - black and white stick-figure line drawing, 512x512, transparent background.
+  Copyright (c) 2026 Randall.
+  This work is licensed under a Creative Commons Attribution 4.0 International License.
+  http://creativecommons.org/licenses/by/4.0/
+-->
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:cc="http://creativecommons.org/ns#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     width="512" height="512" viewBox="0 0 512 512"
+     role="img" aria-labelledby="title desc">
+  <title id="title">Hamstring Stretch</title>
+  <desc id="desc">Stick figure sitting with legs extended, folding forward to reach for the flexed toes.</desc>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>Hamstring Stretch</dc:title>
+        <dc:description>Stick figure sitting with legs extended, folding forward to reach for the flexed toes.</dc:description>
+        <dc:creator><cc:Agent><dc:title>Randall</dc:title></cc:Agent></dc:creator>
+        <dc:date>2026-09-07</dc:date>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/by/4.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g fill="none" stroke="#000000" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <polyline fill="none" points="44.0,452.0 468.0,452.0" stroke-width="6"/>
+    <polyline fill="none" points="176.0,432.0 280.0,436.0 384.0,434.0"/>
+    <polyline fill="none" points="384.0,434.0 394.0,396.0"/>
+    <path fill="none" d="M176,432 Q186,372 204,320"/>
+    <circle fill="none" cx="212.0" cy="296.0" r="24.0"/>
+    <polyline fill="none" points="198.0,338.0 288.0,362.0 376.0,392.0"/>
+  </g>
+</svg>
