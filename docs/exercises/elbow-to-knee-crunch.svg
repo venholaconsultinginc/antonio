@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Elbow To Knee Crunch - black and white stick-figure line drawing, 512x512, transparent background.
+  Elbow To Knee Crunch - black and white stick-figure line drawing, transparent background,
+  cropped to its own content.
   Copyright (c) 2026 Randall.
   This work is licensed under a Creative Commons Attribution 4.0 International License.
   http://creativecommons.org/licenses/by/4.0/
@@ -9,7 +10,7 @@
      xmlns:dc="http://purl.org/dc/elements/1.1/"
      xmlns:cc="http://creativecommons.org/ns#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     width="512" height="512" viewBox="0 0 512 512"
+     width="441" height="176" viewBox="35.5 284.5 441 176"
      role="img" aria-labelledby="title desc">
   <title id="title">Elbow To Knee Crunch</title>
   <desc id="desc">Stick figure lying on its back, twisting to bring one elbow across to the opposite raised knee.</desc>

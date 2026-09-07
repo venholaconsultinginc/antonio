@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Stretch Forearms - black and white stick-figure line drawing, 512x512, transparent background.
+  Stretch Forearms - black and white stick-figure line drawing, transparent background,
+  cropped to its own content.
   Copyright (c) 2026 Randall.
   This work is licensed under a Creative Commons Attribution 4.0 International License.
   http://creativecommons.org/licenses/by/4.0/
@@ -9,7 +10,7 @@
      xmlns:dc="http://purl.org/dc/elements/1.1/"
      xmlns:cc="http://creativecommons.org/ns#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     width="512" height="512" viewBox="0 0 512 512"
+     width="441" height="408" viewBox="35.5 64.5 441 408"
      role="img" aria-labelledby="title desc">
   <title id="title">Stretch Forearms</title>
   <desc id="desc">Stick figure standing with one arm extended, using the other hand to draw the fingers back for a forearm stretch.</desc>
