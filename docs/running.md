@@ -6,9 +6,10 @@ New to Python, or don't have dependencies installed yet? See [setup](setup.md) f
 
 ## Example database
 
-25 daily ~5&nbsp;km runs along a real public route — one a day across August 1–29, 2026, with
-Sundays as rest days — fabricated (no real person, device, or activity represented). Download `cordelia-sample-running.sqlite`, with its SHA-256
-checksum and GPG signature, from [the downloads page](example-databases.md).
+25 runs of ~5&nbsp;km along a real public route, one a day across August 1–29, 2026, with Sundays
+as rest days; fabricated (no real person, device or activity represented). Download
+`cordelia-sample-running.sqlite`, with its SHA-256 checksum and GPG signature, from
+[the downloads page](example-databases.md).
 
 ```bash
 sqlite3 example-data/cordelia-sample-running.sqlite
@@ -19,14 +20,14 @@ Flats (near the Canadian War Museum) and Tunney's Pasture.
 
 ![Map of the Ottawa River Pathway out-and-back route used for the running example data](ottawa-river-pathway.png)
 
-[Download the route as a GPX file](ottawa-river-pathway.gpx) — sourced from
+[Download the route as a GPX file](ottawa-river-pathway.gpx), built from
 [OpenStreetMap](https://www.openstreetmap.org/) way data (© OpenStreetMap contributors, licensed
 [ODbL](https://opendatacommons.org/licenses/odbl/)).
 
 ## Example reports
 
 [`reports/running_report.py`](../reports/running_report.py) reads the example database above and
-produces a couple of basic reports — read it and copy from it as a starting point for your own.
+produces a couple of basic reports. Read it and copy from it as a starting point for your own.
 
 Summary metrics printed to stdout:
 
@@ -59,22 +60,20 @@ python3 reports/running_report.py
 
 ## Using your own data
 
-The same script works against any Cordelia database, not just the bundled example — pass its path
-with `--db`:
+The script works against any Cordelia database. Pass the path with `--db`:
 
 ```bash
 python3 reports/running_report.py --db path/to/your.sqlite
 ```
 
-By default, plots are written to `reports/output/running/`; pass `--out-dir` to write them
-somewhere else.
+Plots go to `reports/output/running/` by default; pass `--out-dir` to write them somewhere else.
 
 ## What a running activity looks like in Cordelia
 
-Besides `Record` (one row per second of GPS/heart-rate data, shown below), a running activity
-populates: `FileID` (file-level metadata — device, creation time), `Activity` (one row, ties the
-file together), `Session` and `Lap` (the summary metrics the report script reads), `Event`
-(start/stop markers), and `DeviceInfo` (the recording device's details).
+`Record` holds one row per second of GPS and heart-rate data. A running activity also populates
+`FileID` (file-level metadata: device, creation time), `Activity` (one row tying the file
+together), `Session` and `Lap` (the summary metrics the report script reads), `Event` (start and
+stop markers) and `DeviceInfo` (the recording device's details).
 
 The `Record` table, viewed in Cordelia, for one run:
 
@@ -82,4 +81,4 @@ The `Record` table, viewed in Cordelia, for one run:
 
 ---
 
-**More guides:** [Cycling](cycling.md) · [Kayaking](kayaking.md) · [Strength training](strength-training.md) · [Swimming](swimming.md) — or back to [Getting started](README.md).
+**More guides:** [Cycling](cycling.md) · [Kayaking](kayaking.md) · [Strength training](strength-training.md) · [Swimming](swimming.md). Or back to [Getting started](README.md).

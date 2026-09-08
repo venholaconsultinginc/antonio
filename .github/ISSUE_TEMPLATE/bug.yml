@@ -8,8 +8,8 @@ body:
         Thanks for taking the time to report this.
 
         **Everything you write here is public the moment you submit it.** Please don't paste
-        anything you wouldn't want indexed — check console output and screenshots for file paths,
-        email addresses, or location data before you include them.
+        anything you wouldn't want indexed. Check console output and screenshots for file paths,
+        email addresses or location data before you include them.
 
         No GitHub account? Email <help@venholaconsulting.ca> instead.
 
@@ -30,7 +30,7 @@ body:
     attributes:
       label: Version
       description: >
-        Cordelia shows its version in About Cordelia. Kent prints its version — see Getting Help
+        Cordelia shows its version in About Cordelia. Kent prints its version; see Getting Help
         and Version Information in its help. For Antonio, the commit you're working from is enough.
       placeholder: e.g. Cordelia 1.3.0, or Kent 1.3.1
     validations:
@@ -64,15 +64,15 @@ body:
     attributes:
       label: Console or terminal output
       description: |
-        **Cordelia** — include a copy of the console output if you have it; there's a *Copy all*
+        **Cordelia**: include a copy of the console output if you have it. There's a *Copy all*
         button for exactly this.
 
-        **Kent** — include the exact command you ran, the full output, and the exit code (`echo $?`
+        **Kent**: include the exact command you ran, the full output, and the exit code (`echo $?`
         straight afterward). Kent prints its messages, error messages included, on standard output,
-        so `kent info mydata.sqlite > out.txt 2>&1` captures everything; the standard-error
-        redirect catches the one exception, an unhandled-exception message, which is the only thing
-        Kent sends there.
+        so `kent info mydata.sqlite > out.txt 2>&1` captures everything. The standard-error redirect
+        catches the one exception, an unhandled-exception message, which is the only thing Kent
+        sends there.
 
-        If your report involves a specific database, `kent details`'s output describes it — schema
-        version, table counts, file size — without exposing any of the data in it.
+        If your report involves a specific database, `kent details`'s output describes it (schema
+        version, table counts, file size) without exposing any of the data in it.
       render: text

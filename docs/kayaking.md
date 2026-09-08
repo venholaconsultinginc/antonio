@@ -6,7 +6,7 @@ New to Python, or don't have dependencies installed yet? See [setup](setup.md) f
 
 ## Example database
 
-8 out-and-back paddles, fabricated (no real person, device, or activity represented). Download
+8 out-and-back paddles; fabricated (no real person, device or activity represented). Download
 `cordelia-sample-kayaking.sqlite`, with its SHA-256 checksum and GPG signature, from
 [the downloads page](example-databases.md).
 
@@ -18,18 +18,19 @@ sqlite3 example-data/cordelia-sample-kayaking.sqlite
 
 ## What a kayaking activity looks like in Cordelia
 
-The `Record` table, viewed in Cordelia, for one paddle — note the `Speed` column reading `0`
-throughout, the same legacy-field quirk cycling hits; the report script sidesteps it entirely,
-deriving pace from `total_distance`/`total_timer_time` rather than a speed field. Also worth
-noting: there's no wind field anywhere in Cordelia's schema, despite wind being one of the biggest
-swings on paddling pace:
+In `Record`, the `Speed` column reads `0` all the way down, the same legacy-field quirk cycling
+hits; the report script sidesteps it by deriving pace from `total_distance`/`total_timer_time`
+rather than a speed field. Cordelia's schema also has no wind field anywhere, and wind is one of
+the biggest swings on paddling pace.
+
+Here is the `Record` table, viewed in Cordelia, for one paddle:
 
 ![Cordelia's Tables view, showing the Record table for a kayaking activity](cordelia-screenshot-kayaking-record-table.png)
 
 ## Example reports
 
 [`reports/kayaking_report.py`](../reports/kayaking_report.py) reads the example database above and
-produces a couple of basic reports — read it and copy from it as a starting point for your own.
+produces a couple of basic reports. Read it and copy from it as a starting point for your own.
 
 Summary metrics printed to stdout:
 
@@ -63,16 +64,14 @@ python3 reports/kayaking_report.py
 
 ## Using your own data
 
-The same script works against any Cordelia database, not just the bundled example — pass its path
-with `--db`:
+The script works against any Cordelia database. Pass the path with `--db`:
 
 ```bash
 python3 reports/kayaking_report.py --db path/to/your.sqlite
 ```
 
-By default, plots are written to `reports/output/kayaking/`; pass `--out-dir` to write them
-somewhere else.
+Plots go to `reports/output/kayaking/` by default; pass `--out-dir` to write them somewhere else.
 
 ---
 
-**More guides:** [Running](running.md) · [Cycling](cycling.md) · [Strength training](strength-training.md) · [Swimming](swimming.md) — or back to [Getting started](README.md).
+**More guides:** [Running](running.md) · [Cycling](cycling.md) · [Strength training](strength-training.md) · [Swimming](swimming.md). Or back to [Getting started](README.md).
