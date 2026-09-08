@@ -29,8 +29,8 @@ body:
       label: What problem would this solve?
       description: >
         What you're trying to do today, and where it gets awkward. The problem matters more than
-        the solution — knowing what you're up against often suggests a better answer than the one
-        either of us started with.
+        the solution, because knowing what you're up against often suggests a better answer than
+        the one either of us started with.
     validations:
       required: true
 

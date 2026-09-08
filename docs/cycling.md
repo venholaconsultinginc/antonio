@@ -6,8 +6,8 @@ New to Python, or don't have dependencies installed yet? See [setup](setup.md) f
 
 ## Example database
 
-4 rides along the real Tour de Victoria 80&nbsp;km road-cycling route, fabricated (no real person,
-device, or activity represented). Download `cordelia-sample-cycling.sqlite`, with its SHA-256
+4 rides along the real Tour de Victoria 80&nbsp;km road-cycling route; fabricated (no real person,
+device or activity represented). Download `cordelia-sample-cycling.sqlite`, with its SHA-256
 checksum and GPG signature, from [the downloads page](example-databases.md).
 
 ```bash
@@ -16,28 +16,28 @@ sqlite3 example-data/cordelia-sample-cycling.sqlite
 
 ![Map of the Tour de Victoria 80 km route used for the cycling example data](tour-de-victoria-2026-80km.png)
 
-[Download the route as a GPX file](tour-de-victoria-2026-80km.gpx) — the official 2026 Tour de
-Victoria 80&nbsp;km route, exported from
-[RideWithGPS](https://ridewithgps.com/routes/48156781).
+[Download the route as a GPX file](tour-de-victoria-2026-80km.gpx): the official 2026 Tour de
+Victoria 80&nbsp;km route, exported from [RideWithGPS](https://ridewithgps.com/routes/48156781).
 
 ## What a cycling activity looks like in Cordelia
 
-The `Record` table, viewed in Cordelia, for one ride — note the `Speed` column reading `0`
-throughout; Cordelia's own `Speed` field is the legacy one, unpopulated for cycling. The report
-script above reads `enhanced_speed` instead, which is where FIT actually stores it:
+The `Record` table, viewed in Cordelia, for one ride. Note the `Speed` column reading `0` all the
+way down. Cordelia's own `Speed` field is the legacy one and stays unpopulated for cycling, so
+[`reports/cycling_report.py`](../reports/cycling_report.py) reads `enhanced_speed` instead, which
+is where FIT actually stores it:
 
 ![Cordelia's Tables view, showing the Record table for a cycling activity](cordelia-screenshot-cycling-record-table.png)
 
-Besides `Record`, a cycling activity populates the same core tables as running — `FileID`,
-`Activity`, `Session`, `Lap`, `Event`, `DeviceInfo` — plus two cycling-specific ones: `FileCreator`
-(the recording device's software/hardware version) and `Sport`, which names the activity type
-directly (`ROAD` for these rides, rather than leaving you to infer it from `sport_id`/`sub_sport_id`
-codes alone).
+Besides `Record`, a cycling activity populates the same core tables as running: `FileID`,
+`Activity`, `Session`, `Lap`, `Event` and `DeviceInfo`. Two more are cycling-specific.
+`FileCreator` holds the recording device's software and hardware version. `Sport` names the
+activity type directly, `ROAD` for these rides, so you don't have to infer it from
+`sport_id`/`sub_sport_id` codes alone.
 
 ## Example reports
 
 [`reports/cycling_report.py`](../reports/cycling_report.py) reads the example database above and
-produces a couple of basic reports — read it and copy from it as a starting point for your own.
+produces a couple of basic reports. Read it and copy from it as a starting point for your own.
 
 Summary metrics printed to stdout:
 
@@ -55,7 +55,7 @@ An average-speed trend across all 4 rides:
 
 ![Average speed trend across 4 rides](cycling-speed-trend.png)
 
-An elevation profile for the first ride — the Tour de Victoria route is genuinely hilly, unlike
+An elevation profile for the first ride. The Tour de Victoria route is genuinely hilly, unlike
 running's flat Ottawa River Pathway:
 
 ![Elevation profile for one ride](cycling-elevation-profile.png)
@@ -72,16 +72,14 @@ python3 reports/cycling_report.py
 
 ## Using your own data
 
-The same script works against any Cordelia database, not just the bundled example — pass its path
-with `--db`:
+The script works against any Cordelia database. Pass the path with `--db`:
 
 ```bash
 python3 reports/cycling_report.py --db path/to/your.sqlite
 ```
 
-By default, plots are written to `reports/output/cycling/`; pass `--out-dir` to write them
-somewhere else.
+Plots go to `reports/output/cycling/` by default; pass `--out-dir` to write them somewhere else.
 
 ---
 
-**More guides:** [Running](running.md) · [Kayaking](kayaking.md) · [Strength training](strength-training.md) · [Swimming](swimming.md) — or back to [Getting started](README.md).
+**More guides:** [Running](running.md) · [Kayaking](kayaking.md) · [Strength training](strength-training.md) · [Swimming](swimming.md). Or back to [Getting started](README.md).
