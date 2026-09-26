@@ -1,0 +1,9 @@
+# Store and check out text files with LF line endings on every platform.
+* text=auto eol=lf
+
+# Binary files: never convert or diff as text. The databases and archives
+# are covered by .sha256 checksums and .asc signatures, so any change to
+# their bytes would break verification.
+*.png    binary
+*.sqlite binary
+*.kent   binary
