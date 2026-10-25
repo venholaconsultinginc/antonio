@@ -11,7 +11,7 @@ Read one with any zip tool and a JSON parser, with neither Cordelia nor Kent ins
 from `manifest.json`, never from the entry names: table files are numbered, `tables/00000001.jsonl`
 and so on, because a table name can hold characters a file name cannot.
 
-These were produced once, with the released Kent 1.3.4, and the same bytes are served from the
+These were produced once, with Kent 1.4.0, and the same bytes are served from the
 website. They are not reproducible: the manifest carries an export timestamp, so running
 `kent archive` again gives a different file with a different checksum.
 
@@ -22,7 +22,7 @@ website. They are not reproducible: the manifest carries an export timestamp, so
 | <img src="icon-kayaking.svg" width="56" alt=""> | Kayaking | 8 out-and-back paddles in the Gulf Islands<br>Sep 4–27, 2026 · Mayne Island, BC<br>Avg 91.6 min (~1h32m) · 45.7&nbsp;km total (~5.7&nbsp;km/paddle) | [`cordelia-sample-kayaking.sqlite`](../example-data/cordelia-sample-kayaking.sqlite) | [`.kent`](../example-data/cordelia-sample-kayaking.kent) |
 | <img src="icon-strength-training.svg" width="56" alt=""> | Strength training | 8 sessions of work sets and rest periods; no GPS, so no distance or speed<br>Sep 1–24, 2026 · indoor (no GPS)<br>Avg 51.3 min · 51 work sets + 50 rest periods/session | [`cordelia-sample-strength-training.sqlite`](../example-data/cordelia-sample-strength-training.sqlite) | [`.kent`](../example-data/cordelia-sample-strength-training.kent) |
 | <img src="icon-swimming.svg" width="56" alt=""> | Swimming | 26 sessions, one per day through August 2026 (Sundays off), 25&nbsp;m indoor pool, freestyle<br>Aug 1–31, 2026 · indoor pool (no GPS)<br>Avg 20.9 min · 41 lengths/session | [`cordelia-sample-swimming.sqlite`](../example-data/cordelia-sample-swimming.sqlite) | [`.kent`](../example-data/cordelia-sample-swimming.kent) |
-| <img src="icon-empty.svg" width="56" alt=""> | Empty | Full schema, no activity data: a blank starting point<br>129 tables, with only Cordelia's seeded lookup tables populated (19,704 rows: 16,866 in `better_labels_lookup`, 2,811 in `better_labels_definitions`, plus the file- and field-type lookups) | [`cordelia-sample-empty.sqlite`](../example-data/cordelia-sample-empty.sqlite) | [`.kent`](../example-data/cordelia-sample-empty.kent) |
+| <img src="icon-empty.svg" width="56" alt=""> | Empty | Full schema, no activity data: a blank starting point<br>130 tables, with only Cordelia's seeded lookup tables populated (27,768 rows: 23,778 in `better_labels_lookup`, 3,963 in `better_labels_definitions`, plus the file- and field-type lookups) | [`cordelia-sample-empty.sqlite`](../example-data/cordelia-sample-empty.sqlite) | [`.kent`](../example-data/cordelia-sample-empty.kent) |
 
 Pick the sport closest to your own activity data, or the empty one to explore the schema itself,
 then see [Getting started](README.md) for a walkthrough of each.
